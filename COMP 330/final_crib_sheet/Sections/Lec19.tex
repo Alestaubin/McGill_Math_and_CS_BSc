@@ -1,0 +1,12 @@
+\subsection{\color{ForestGreen}P vs. NP}
+\begin{itemize}
+    \item A TM that given an input of length \( n \), always halts within \( T(n) \) moves is said to be \( T(n) \)-time bounded. (The TM can be multitape or non-deterministic; the detemrinistic multitape case corresponds roughly to an \( O(T(n)) \) time alg)
+    \item If a DTM \( M \) is \( T(n) \) bounded for some polynomial \( T \), then \( M \) is polytime bounded. We say \( L(M) \in \mathbf{P} \).
+    \item A multitape TM can simulate a computer that runs in time \( O(T(n)) \) in at most \( O(T^{2} (n)) \) steps, so if \( T \) is poly then so is \( T^{2}. \) 
+    \item \textbf{Knapsack:} given integers \( i_1, i_2, \hdots , i_{n} > 0 \), can we divide them into two sets with equal sum? \textbf{Pseudo-Knapsack:} integers representated in unary (i.e. a, aa, aaa, ...). This problem is in \( \mathbf{P} \). 
+    \item Input size: the length of the representation of the problem instance as an input to a TM.
+    \item The running time of a NTM is the max number of steps taken along any branch. If that time bound is polynomial, the NTM is \textbf{polytime bounded}. Its language / problem is said to be in \( \mathbf{NP} \). Knapsack \( \in \mathbf{NP} \).
+    \item A DP is \( \mathbf{NP} \)-\textbf{complete} if it is in \( \mathbf{NP} \) and it is \( \mathbf{NP} \)-\textbf{hard}. A DP \( M \) is \( \mathbf{NP} \)-hard if every problem/language in \( L \in \mathbf{NP} \), there is a polynomial time reduction from \( L \) to \( M \). That is, $L$ is NPC if $L\in NP$ and $\forall L^\prime \in NP$, $L^\prime \leq_P L$.
+    \item Polytime reduction: need a polynomial transducer. This is a TM that (1) takes an input of length \( n \), (2) operates deterministically for some polynomial time \( p(n) \), (3) produces an output on a separate output tape. (the output length is at most \( p(n) \)). We say \( L \) is \textbf{polytime reducible} to \( M \) if there is a polytime transducer \( T \) such that for every input \( w \) to \( T \), the output \( x = T(w) \) is in \( M \) if and only if \( w \in L \). 
+    
+\end{itemize}

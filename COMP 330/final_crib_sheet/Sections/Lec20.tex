@@ -1,0 +1,9 @@
+\subsection{\color{ForestGreen}Cook's Theorem, Satisfiability}
+\subsubsection{Definitions}
+\begin{itemize}
+    \item $\mathbf{SAT} := \{F | F \text{is a satisfiable boolean formula}\}$, i.e. $F$ has an assignment of variable s.t. $F$ evaluates to true. $\mathbf{SAT}\in NPC.$
+    \item A  Boolean formula is in \textbf{Conjunctive Normal Form (CNF)} if it is the AND of \textit{clauses}. Each clause is the OR of \textit{literals}. A literal is either a \textit{variable} or the negation of a variable.
+    \item \textbf{CSAT}: is a Boolean formula in CNF satisfiable.  $\mathbf{CSAT}\in NPC.$
+    \item \textbf{k-SAT}: If a boolean formula is in CNF and every clause consists of exactly k literals, we say it is an instance of $kSAT.$ $2SAT$ is in $P$; $3SAT$ is NPC.
+
+\end{itemize}

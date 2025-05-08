@@ -1,0 +1,44 @@
+\subsection{\color{ForestGreen}Push Down Automata}
+\subsubsection{Definitions}
+\begin{itemize}
+    \item \textbf{Pushdown Automaton (PDA)}: $P =(Q , \Sigma, \Gamma, \delta, q_0, Z_0, F)$, where $Q$ is a finite set of states, $\Sigma$ a finite set of input symbols, $\Gamma$ a finite stack alphabet, $\delta$ the transition function that takes as argument $\delta(q, a , X)$ where $q\in Q, a\in \Sigma$ or $a = \epsilon$ is the input symbol, $X \in \Gamma$ is the stack symbol read, $q_0$ the start state, $Z_0$ the start symbol, $F$ the set of accepting states.  
+    \item The output of $\delta$ is a finite set of pairs $(p, \gamma)$ where $p$ is the new state and $\gamma$ is the string of stack symbols that replaces $X$ at the top of the stack. For instance if $\gamma = \epsilon$ then the stack is popped, if $\gamma = X$, then the stack is unchanged and if $\gamma = YZ$ then $X$ is replaced by $Z$ and $Y$ is pushed
+on to the stack.
+\item \textbf{Instantaneous Description (ID)}: A triple $(q, w, \alpha)$ where $q$ is the current state, $w$ is the remaining input, $\alpha$ is the stack contents, top at the left.
+\item To say that ID $I$ can become ID $J$ in one move of the PDA, we write $I\vdash J$. 
+\item Accept by final state: if $P$ is a PDA, then $L(P)$ is the set of strings $w$ such that $(q_0  w, Z_0) \vdash ^* (f, \epsilon, \alpha)$ for final state $f$ and any $\alpha.$
+\item Accept by empty stack: if $P$ is a PDA, then $N(P)$ is the set of strings $w$ such that $(q_0  w, Z_0) \vdash ^* (q, \epsilon, \epsilon)$ for any state $q$.
+\item Graphical notation for PDA: $\sigma, A \rightarrow \gamma$ means read $\sigma$ from the input, pop $A$ (can only pop $A$ if the top element of the stack is $A$), and push $\gamma.$ An arc labeled $a, X \rightarrow \alpha $ from state $q$ to state $p$ means that $\delta (q, a , X)$ contains the pair $(p, \alpha ). $
+
+\item A \textbf{Deterministic PDA} (DPDA) is a PDA with the following restrictions: 
+\begin{enumerate}
+    \item $|\delta (q, a, X) | \leq 1$
+    \item if $\delta(q, a, X) \neq \varnothing $ for some $a\in \Sigma, $ then $\delta (q, \epsilon ,X) = \varnothing$.  
+\end{enumerate}
+Trick to check for determinism is to see if one ID can lead to $>1$ ID's. 
+\end{itemize}
+\subsubsection{Results}
+\begin{itemize}
+    \item Accept by final state and accept by empty stack PDA's define the same class of languages.
+    \item $L(P) \implies N(P^\prime): $ $P^\prime$ has all the states, symbols, and moves of P, plus:
+    \begin{enumerate}
+        \item Stack symbol $X_0$, used to guard the stack bottom against accidental emptying.
+        \item New start state $s$ and “erase” state $e.$
+        \item $\delta(s, \epsilon, X_0) = \{ (q_0, Z_0X_0) \} $. Get $P$ started. 
+        \item $\delta(f, \epsilon, X) = \delta(e, \epsilon, X) = \{(e, \epsilon)\}$ for any final state $f$ of $P$ and any stack symbol $X$. 
+    \end{enumerate}
+    \item $N(P)\implies L(P^{\prime\prime})$: $P^{\prime \prime}$ has all the states, symbols and moves of $P$, plus: 
+    \begin{enumerate}
+        \item Stack symbol $X_0$ to guard the stack bottom. 
+        \item New start state $s$ and final state $f$. 
+        \item $\delta(s, \epsilon, X_0) = \{ (q_0 , Z_0 W_0) \} $. Get $P$ started. 
+        \item $\delta(q, \epsilon, X_0 )= \{(f, \epsilon)\}$ for any state $q$ of $P.$
+    \end{enumerate}
+    \item Non-deterministic PDA's (NPDA) are not equivalent to Deterministic PDA's (DPDA). In particular, $NPDA\iff CFG$, but there are CFG's that can't be defined by DPDA's.
+    \item To show that $L$ is CF, can either 
+    \begin{enumerate}
+        \item Create a CFG $G$ s.t. $L(G) = L$
+        \item Create a NPDA $P$ s.t. $L(P) = L$
+    \end{enumerate}
+    
+    \end{itemize}

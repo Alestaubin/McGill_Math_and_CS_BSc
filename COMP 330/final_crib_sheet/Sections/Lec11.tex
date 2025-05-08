@@ -1,0 +1,35 @@
+\subsection{\color{ForestGreen}PDA $\iff$ CFG}
+\subsubsection{$\mathbf{CGF \implies PDA}$}
+Let $G$ a CFG, $L = L(G).$ We Construct PDA $P$ such that $N(P) = L.$ P has:
+    \begin{enumerate}
+        \item One state $q$.
+        \item Input symbols = terminals of $G$.
+        \item Stack symbols = all symbols of $G$.
+        \item Start symbol = start symbol of $G$.
+        \item For each terminal $a$, $\delta (q, a, a) = (q, \epsilon).$ 
+        \item For each variable $A$, if $A \rightarrow \alpha $ is a production of $G$, then $\delta (q, \epsilon, A) $ contains $(q, \alpha).$
+    \end{enumerate}
+    Given input $w$, $P$ will step through a leftmost derivation of $w$ from the start symbol $S$. Since $P$ can’t know what this derivation is, or even what the end of $w$ is, it uses nondeterminism to “guess” the production to use at each step.
+\subsubsection{$\mathbf{PDA \implies CFG}$}
+Assume $L = N(P)$, we construct $G=(V, \Sigma, R, S)$, where the set of variables $V$ consists of:
+    \begin{enumerate}
+        \item The special symbol $S$, which is the start symbol, and
+        \item All symbols of the form $[p X q]$, where $p$ and $q$ are states in $Q$, and $X$ is a stack symbol, in $\Gamma$.
+    \end{enumerate}
+The productions of $G$ are as follows:
+\begin{enumerate}
+    \item For all states $p, G$ has the production $S \rightarrow\left[q_0 Z_0 p\right]$. Recall our intuition that a symbol like $\left[q_0 Z_0 p\right.$ ] is intended to generate all those strings $w$ that cause $P$ to pop $Z_0$ from its stack while going from state $q_0$ to state $p$. That is, $\left(q_0, w, Z_0\right) \vdash^*(p, \epsilon, \epsilon)$. If so, then these productions say that start symbol $S$ will generate all strings $w$ that cause $P$ to empty its stack, after starting in its initial ID.
+    \item Let $\delta(q, a, X)$ contain the pair $\left(r, Y_1 Y_2 \cdots Y_k\right)$, where:
+    
+a) $a$ is either a symbol in $\Sigma$ or $a=\epsilon$.
+
+b) $k$ can be any number, including 0 , in which case the pair is $(r, \epsilon)$.
+
+Then for all lists of states $r_1, r_2, \ldots, r_k, G$ has the production
+$$
+\left[q X r_k\right] \rightarrow a\left[r Y_1 r_1\right]\left[r_1 Y_2 r_2\right] \cdots\left[r_{k-1} Y_k r_k\right]
+$$
+
+This production says that one way to pop $X$ and go from state $q$ to state $r_k$ is to read $a$ (which may be $\epsilon$ ), then use some input to pop $Y_1$ off the stack while going from state $r$ to state $r_1$, then read some more input that pops $Y_2$ off the stack and goes from state $r_1$ to $r_2$, and so on.
+
+\end{enumerate}

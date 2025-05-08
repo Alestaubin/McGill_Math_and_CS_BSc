@@ -1,0 +1,24 @@
+\subsection{\color{ForestGreen}Non-deterministic Finite Automata}
+\subsubsection{Definitions}
+\begin{itemize}
+    \item A \textbf{nondeterministic finite automaton (NFA)} has the ability to be in several states at once, has the same components as a DFA.
+    \item Transition function of an NFA: $\delta(q, a)$ is a set of states.
+    \item DFA’s, NFA’s, and $\epsilon$–NFA’s all accept exactly the same set of languages: the regular languages.
+\end{itemize}
+\subsubsection{$\mathbf{NFA \implies DFA}$ (Subset Construction)}
+Given an NFA $N = (Q_N, \Sigma, \delta_N, q_0, F_N)$, we convert it to the DFA $D = (Q_D, \Sigma, \delta_D, q_0, F_D) $. 
+\begin{itemize}
+    \item $Q_D$ is the power set of $Q_N$. So if $Q_N$ has $n$ states, $Q_D$ would have $2^n$ states, yet not all of them will be accessible so in reality much less.
+    \item $F_D$ is the set of $N's$ states that include $\geq 1$ accepting state of $N$.
+    \item For each $S \subseteq Q_N$, $a\in \Sigma$, $\delta _D (S, a) = \bigcup_{p \in S} \delta_N (p, a).$ That is, look at all states $p \in S$ and see what states $N$ goes to from $p$ input on $a$ and take the union of those states.
+\end{itemize}
+\textbf{Lazy Subset Construction}: add only the states that are reachable,
+\begin{itemize}
+    \item Begin with the start state $q_0$, adding the subsets reached from it. 
+    \item While there is a subset for which a state is not yet defined, add it to the states. 
+\end{itemize}
+\subsubsection{$\mathbf{\epsilon-NFA \implies NFA}$}
+\begin{itemize}
+    \item $CL(q) =$ set of states you can reach from $q$ only with $\epsilon$-transitions.
+    \item Compute $\delta_N(q, a)$ as follows (1) Let $S = CL(q)$ (2) $\delta_N(q, a)$ is the union over all $p \in S$ of $\delta_E(p, a)$ ($\delta_E$ is the transition function of the $\epsilon$-NFA). $F^\prime =$ the set of states $q$ s.t. $CL(q)$ contains a state of $F$.
+\end{itemize}

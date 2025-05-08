@@ -1,0 +1,28 @@
+\subsection{\color{ForestGreen}Decidability}
+\subsubsection{Definitions}
+
+\begin{itemize}
+    \item TM \textbf{Encoding:}
+    \begin{enumerate}
+        \item Encode the transition rule $\delta(q_i, X_j) = (q_k , X_l, D_m)$, for $i,j,k,l,m \in \mathbb{N}^+$ by the string $0^i10^j10^k10^l10^m.$ 
+        \item A code for the entire TM $M$ consists of all the transitions codes in
+some order separated by pairs of 1's: $C_111C_2 11 \hdots11 C_n.$
+    \end{enumerate}
+    \item $\mathbf{i^{th}}$ \textbf{binary string}: If w is a binary string, we shall treat $1w$ as the binary integer $i$ so we can call $w$ the $i^{th}$ string.
+    \item The $i^{th}$ TM: TM $M_i$ whose encoding is $w_i$, the $i^{th}$ binary string. 
+    \item Diagonalization language $\mathbf{L_d}$: the set of strings $w_i$
+such that $w_i$ is not in $L (M_i)$. That is, $\mathbf{L_d}$ consists of all strings $w$ such that the TM $M$ whose code is $w$ does not accept when given $w$ as input. 
+\item Universal Language $\mathbf{L_u}$: the set of binary strings that encode a pair $(M, w) $, where $M$ is a TM with binary input alphabet and $w\in (0 + 1)^*$ s.t. $w \in L(M)$. 
+\item \textbf{Universal Turing Machine} (UTM): A TM $U$ s.t. $\mathbf{L_u} = L(U)$, i.e. $U$ takes as input the code for some TM $M$ and some binary string $w$ and accepts $\iff$ $M$ accepts $w$.
+\begin{itemize}
+    \item  Input code for UTM is $M111w$, a valid TM code never has 111, so we can split M from w.
+    \item The UTM has several tapes: Tape 1 holds the input $M111w$, Tape 2 marks the current head position of $M$, Tape 3 holds the state of $M$.
+
+\end{itemize}
+
+\end{itemize}
+\subsubsection{Results}
+\begin{itemize}
+    \item Main result: there are more languages than programs.
+    \item $L_d$ is not a RE language, i.e. there is no TM that accepts $L_d$.
+\end{itemize}

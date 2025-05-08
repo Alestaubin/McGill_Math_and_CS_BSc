@@ -1,0 +1,34 @@
+\babel@toc {english}{}\relax 
+\contentsline {chapter}{\numberline {1}Introduction}{5}{chapter.1}%
+\contentsline {chapter}{\numberline {2}Differentiation}{7}{chapter.2}%
+\contentsline {section}{\numberline {2.1}Geometry of real valued functions}{7}{section.2.1}%
+\contentsline {section}{\numberline {2.2}Limits and continuity}{9}{section.2.2}%
+\contentsline {section}{\numberline {2.3}Differentiation}{11}{section.2.3}%
+\contentsline {section}{\numberline {2.4} Paths and Curves }{14}{section.2.4}%
+\contentsline {section}{\numberline {2.5}Properties of the derivative}{14}{section.2.5}%
+\contentsline {section}{\numberline {2.6}Gradients and directional derivatives}{15}{section.2.6}%
+\contentsline {subsection}{\numberline {2.6.1}Geometric interpretation of the gradient}{16}{subsection.2.6.1}%
+\contentsline {chapter}{\numberline {3}Higher Order derivatives}{19}{chapter.3}%
+\contentsline {section}{\numberline {3.1}Iterated Partial Derivatives}{19}{section.3.1}%
+\contentsline {section}{\numberline {3.2}Taylor's Theorem}{20}{section.3.2}%
+\contentsline {section}{\numberline {3.3}Extrema of Real-valued functions}{21}{section.3.3}%
+\contentsline {subsection}{\numberline {3.3.1}Absolute maxima and minima}{24}{subsection.3.3.1}%
+\contentsline {section}{\numberline {3.4}Constrained Extrema and Lagrange Multiplier}{26}{section.3.4}%
+\contentsline {chapter}{\numberline {4}Vector Fields and their flow lines}{31}{chapter.4}%
+\contentsline {section}{\numberline {4.1}Vector Fields}{31}{section.4.1}%
+\contentsline {section}{\numberline {4.2}Flow lines}{33}{section.4.2}%
+\contentsline {section}{\numberline {4.3}Divergence, curl, and the "magic sequence"}{35}{section.4.3}%
+\contentsline {subsection}{\numberline {4.3.1}Geometric Interpretation of grad, div, and curl}{36}{subsection.4.3.1}%
+\contentsline {chapter}{\numberline {5}Change of Variables and Integration}{39}{chapter.5}%
+\contentsline {section}{\numberline {5.1}Geometry of maps}{39}{section.5.1}%
+\contentsline {section}{\numberline {5.2}Change of variables Theorem}{39}{section.5.2}%
+\contentsline {chapter}{\numberline {6}Integrals over Surfaces and Paths}{45}{chapter.6}%
+\contentsline {section}{\numberline {6.1}Line Integrals of Vector Fields}{45}{section.6.1}%
+\contentsline {section}{\numberline {6.2}Parametrized Surfaces}{49}{section.6.2}%
+\contentsline {section}{\numberline {6.3}Integrals of Scalar Functions Over Surfaces}{52}{section.6.3}%
+\contentsline {section}{\numberline {6.4}Surface Integrals of Vector Fields - Flux}{55}{section.6.4}%
+\contentsline {subsection}{\numberline {6.4.1}Summary: Formulas for Surface Integrals}{59}{subsection.6.4.1}%
+\contentsline {chapter}{\numberline {7}The Integral Theorems of Vector Analysis}{61}{chapter.7}%
+\contentsline {section}{\numberline {7.1}Green's Theorem}{61}{section.7.1}%
+\contentsline {section}{\numberline {7.2}Stoke's Theorem}{65}{section.7.2}%
+\contentsline {section}{\numberline {7.3}Gauss' Divergence Theorem}{68}{section.7.3}%

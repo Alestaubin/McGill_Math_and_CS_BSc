@@ -1,0 +1,24 @@
+\subsection{\color{ForestGreen}Closure Properties of TMs, Extensions, Restrictions}
+\subsubsection{Definitions}
+\begin{itemize}
+    \item \textbf{Multiple tracks}: Think of tape symbols as vectors with $k$ components. Input symbols are blank in all but one track. Common use: use the extra track to mark certain positions
+    \item \textbf{Multitape}: Allow a TM to have $k$ tapes for any fixed $k$. Move of the TM depends on the state and the symbols under the head for each tape. In one move, the TM can change state, write symbols under each head, and move each head independently.
+    \item Simulate $k$ tapes with tracks: Use $2k$ tracks. Each tape of the k-tape machine is represented by a track. The head position for each track is represented by a mark on an additional track.
+    \item \textbf{Nondeterministic TM (NTM)}: Allow the TM to have a choice of move at each step. Each choice is a state-symbol-direction triple, as for the deterministic TM.
+\end{itemize}
+
+\subsubsection{Results}
+Recursive and RE languages are closed under:
+\begin{itemize}
+    \item \textbf{Union}: Assume $M_1 $ and $M_2$ are single-semi-infinite-tape TM’s. Construct 2-tape TM $M$ to copy its input onto the second tape and simulate the two TM’s $M_1$ and $M_2$ each on one of the two tapes, “in parallel.” Recursive languages: If $M_1$ and $M_2$ are both algorithms, then $M$ will always halt in both simulation. RE languages: accept if either accepts, but both TM’s run forever without halting.
+    \item \textbf{Intersection}: same idea as above, accept if both TM's accept.
+    \item \textbf{Concatenation}: RE: Construct 2-tape Nondeterministic TM M, (1) Guess a break in input $w = xy$ (2) Move $y$ to second tape (3) Simulate $M_1$ on $x$, $M_2$ on $y$ (4) Accept if both accept. Recursive: Can’t use a NTM. (1) Systematically try each break $w = xy$, (2) $M_1$ and $M_2$ will eventually halt for each break, (3) Accept if both accept for any one break, Reject if all breaks tried and none lead to acceptance.
+    \item \textbf{Star}: guess many breaks, accept if $M_1$ accepts each piece.
+    \item \textbf{Reversal}: reverse the input, simulate TM for $L$ to accept $w \iff w^R\in L$.
+    \item \textbf{Inverse Homomorphism}: Apply $h$ to input $w$. Simulate TM for $L$ on  $h(w$). Accept $w\iff h(w) \in L$.
+
+\end{itemize}
+Recursive languages are also closed under \textbf{Complement} and \textbf{Difference.}
+
+RE languages are closed under \textbf{Homomorphism}: Let $L = L(M_1)$, design NTM $M$ to take input $w$ and guess an $x$ such that $h(x) = w$. $M$ accepts whenever $M_1$ accepts $x$.
+

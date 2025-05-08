@@ -1,0 +1,29 @@
+\subsection{\color{ForestGreen}Closure Properties of Regular Languages}
+
+\begin{itemize}
+    \item Union: if $L$ and $M$ are regular, then so is $L\cup M$. (take regexes \( L \) and \( M \) corresponding, their union is \( L+M \). The same exact holds for Kleene closure and concat (follows from correspondence between DFAs and Regex's).
+    \item Complement: if $L$ is regular, then $\bar L = \Sigma^* - L$ is regular.
+    \begin{enumerate}
+        \item Convert the Regex to an $\epsilon-NFA$, convert the $\epsilon-NFA$ to a DFA.
+        \item Convert the accepting states into non-accepting, and vice-versa. 
+    \end{enumerate}
+    \item Intersection: If $L$ and $M$ are regular, then so is $L\cap M$.
+    \begin{enumerate}
+        \item Construct the \textbf{product automaton} $A$ of $L$ and $M.$
+        \item The states of $A$ are $Q_L \times Q_M$. 
+        \item The transitions are $\delta ((p, q), a) = (\delta_L(p, a), \delta_M(q, a)) $
+        \item The final states are $F_L \times F_M$. 
+    \end{enumerate}
+    \item Difference: if $L$ and $M$ are regular, then so is $L-M$ because $L-M = L\cap \bar M$.
+    \item Reversal: Given a language $L = L(A)$, we construct an automaton for $L^R$ by:
+    \begin{enumerate}
+        \item Reverse all the arcs in the transition diagram for A
+        \item Make the start state of $A$ be the only accepting state for the new automaton
+        \item Create a new start state $p_0$ with $\epsilon$-transitions to all the accepting states of $A$.
+    \end{enumerate}
+    \item The closure star $L^*$ of a regular language $L$ is regular
+    \item The concatenation of regular languages is regular
+    \item A homomorphism substitution of strings for symbols of a regular language is regular
+    \item The inverse homomorphism of a regular language is regular: Let $h$ be a homomorphism and $L$ a language whose alphabet is the output language of $h$. $ h^{-1}(L)= \{w | h(w) \in L\}$.
+
+\end{itemize}

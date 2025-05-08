@@ -1,0 +1,15 @@
+\subsection{\color{ForestGreen}Deterministic Finite Automata}
+\subsubsection{Definitions}
+\begin{itemize}
+\item \textbf{DFA} $A = (Q, \Sigma, \delta, q_0, F)$:
+\begin{enumerate}
+    \item A finite set of states $Q$.
+    \item An input alphabet $\Sigma$.
+    \item A transition function $\delta (q, a) =$ the state that the DFA goes to when it is in state $q$ and input $a$ is received.
+    \item A start state $q_0 \in Q$.
+    \item A set of final states $F \subseteq Q$.
+\end{enumerate}
+
+    \item A language is \textbf{Regular} if it is accepted by some DFA.
+    \item \textbf{Extended} \( \delta  \): \( \delta (q,\varepsilon ) = q \) and \( \delta (q, wa) = \delta (\delta (q,w), a) \).
+\end{itemize}

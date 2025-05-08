@@ -1,0 +1,71 @@
+\subsection{\color{ForestGreen} Decision Properties of Regular Languages}
+\subsubsection{Definitions}
+\begin{itemize}
+    \item Language class: a set of languages (e.g. Regular languages).
+    \item Language representation: either formal (RE or DFA), or informal (e.g. a logical statement about its strings).
+    \item Decision Property of a language class: takes a formal description of a language and decides whether or not some property holds (e.g. is this language empty?).
+\end{itemize}
+Cycle of conversion: 
+
+$RE \implies \epsilon-NFA \implies NFA \implies DFA \implies RE$
+
+\subsubsection{Decision Properties}
+Assume language $L$ is represented by a DFA $A$.
+
+\textbf{Membership Problem}: "Is string $w$ in regular language $L$?"
+\begin{itemize}
+    \item Simulate the action of $A$ on $w$.
+\end{itemize}
+\textbf{Emptiness Problem}: "Does the language $L$ contain any string at all?"
+\begin{itemize}
+    \item Construct the transition graph from $A.$
+    \item Compute the set of states reachable from the start state. 
+    \item If any final state is reachable, then yes, else no.
+\end{itemize}
+\textbf{Infiniteness Problem}: "Is the language $L$ infinite?"
+\begin{itemize}
+    \item If $A$ has $n$ states, and the language contains any string of length $\geq n$, then yes, otherwise no.
+    \item There are infinitely many strings of length $\geq n$, can't test them all.
+    \item If there is a string of length $\geq n$ in $L$, then there is a string of length between $n$ and $2n -1.$
+    \item Algorithm 1: Test for all strings of length $k \in [n, 2n-1]$ (terrible).
+    \item Algorithm 2: Find cycles between the start and final state. (1) Eliminate states not reachable from the start state. (2) Eliminate states that don't reach a final state. (3) Test if remaining transition graph has cycles.
+\end{itemize}
+\textbf{Equivalence Problem}: "Given languages $L$ and $M$, is $L = M?$" 
+\begin{itemize}
+    \item Let the DFAs for $L$ and $M$ be $A$ with states $Q$ and $B$ with states $R$.
+    \item The \textbf{product DFA} of $A$ and $B$ has states $Q\times R$, i.e. pars $[q,r]$ for $q \in Q, \; r \in R.$
+    \item Start state: $[q_0 , r_0]$, i.e. the start states of $A, B$.
+    \item Transitions: $\delta ([q,r], a) = [\delta_A(q, a), \delta_B (r, a)]$.
+     \item Final states: $[q,r]$ s.t. exactly one of $q$, $r$ is a final state of its own DFA. Thus the product DFA accepts $w \; \iff$ $w\in \{L \oplus M\}$.
+     \item The product DFA's language is empty $\iff L=M$.
+\end{itemize}
+\textbf{Containment problem}: "Given languages $L$ and $M$, is $L\subseteq M?$
+\begin{itemize}
+    \item Construct the product DFA, as above, but define the final states differently: $[q,r]$ s.t. $q$ is final, $r$ is not, where $q$ is a state of $L$'s DFA.
+    \item The product DFA's language is empty $\iff L\subseteq M$.
+\end{itemize}
+\subsubsection{State Minimization}
+\begin{itemize}
+    \item Basis: mark a pair if exactly one is a final state. 
+\item Induction: mark $[q,r]$ if there is some input symbol $a$ s.t. $[\delta(q, a) , \delta(r,a )]$ is marked. 
+\item After no more marks are possible, the unmarked pairs are \textit{indistinguishable} and can be merged into one state. 
+\end{itemize}
+\textbf{Constructing the minimum state DFA}:
+Suppose $q_1 ,..., q_k$ are \textit{indistinguishable}. Replace them by one state. Then, $\delta(q_1, a) ,..., \delta(q_k, a)$ are indistinguishable states, and we may let $\delta(q, a)$ be the representative state for that group. Finally, remove unreachable states. 
+
+
+\subsubsection{Pumping Lemma for Regular Languages}
+For every regular language $L$, there is an integer $n$ such that for every string $w \in L$ of length $\geq n$, we can write $w = xyz$ s.t. (1) $|xy| \leq n$, (2) $|y|> 0$, (3) $\forall i \geq 0, x y^iz \in L$.
+
+\textbf{Example}: The language $L = \{a^n b^n : n \geq 0\}$ over the alphabet $\Sigma = \{a, b\}$ can be shown to be non-regular as follows:
+\begin{enumerate}
+\item Let $w, x, y, z$, and $n$ be as used in the Pumping lemma. 
+\item Assume that some constant $p$ exists as required by the lemma. 
+\item Let $w$ in $L$ be given by $w = a^p b^p$, which is a string longer than $p$. 
+\item By the pumping lemma, there must exist a decomposition $w = xyz$ with $|xy| \leq p$ and $|y| \geq 1$ such that $xy^iz$ in $L$ for every $i \geq 0$. 
+\item Since $|xy| \leq p$, the string $y$ only consists of instances of $a$.  
+\item Because $|y| \geq 1$, it contains at least one instance of the letter $a$. 
+\item Pumping $y$ to give $xy^2z$ gives a word with more instances of the letter $a$ than the letter $b$, since  some instances of $a$ but none of $b$ were added. 
+\item Therefore, $xy^2z$ is not in $L$ which contradicts the pumping lemma.
+\item Therefore, $L$ cannot be regular.
+\end{enumerate}

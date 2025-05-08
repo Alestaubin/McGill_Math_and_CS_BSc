@@ -1,0 +1,45 @@
+\subsection{\color{ForestGreen}Undecidability, Turing Machines, RE languages}
+\subsubsection{Definitions}
+\begin{itemize}
+    \item A \textbf{Turing Machine (TM)} is given as $M = (Q, \Sigma, \Gamma, \delta, q_0, B, F), $ where $Q$ is the finite set of states, $\Sigma$ the finite set of input symbols, $\Gamma$ the complete set of \textit{tape symbols} ($\Sigma \subseteq \Gamma$), $\delta(q, X) = (p, Y, D)$ where $q \in Q,$ $X \in \Gamma$, $p\in Q$ is the new state, $Y\in\Gamma$ is the symbol being written in the cell being scanned, $D \in \{L, R\}$ is the direction to move the head. $q_0$ is the start state, in which the finite control is found initially, $B\in \Gamma, \notin \Sigma$, is the blank symbol, $F\subseteq Q$ the accept states. 
+    \item Instantaneous Description (ID) for TM's: We use the string $X_1 X_2 \hdots X_{i-1} q  X_i X_{i+1} \hdots X_n $ to represent an ID in which 
+    \begin{enumerate}
+        \item $q$ is the state of the TM. 
+        \item The tape head is scanning the $i^{th}$ symbol from the left. 
+        \item $X_1X_2\hdots X_n$ is the portion of the tape between the leftmost and rightmost nonblank.
+    \end{enumerate}
+    \item Graphical notation for TM: An arc from state $q$ to state $p$ is labeled by $X/Y\;  D$ where $X,Y\in \Gamma$, D
+a direction. That is, whenever $\delta (q ,X) = ( p ,Y ,D)$, we find the
+label $X/Y\;  D$ on the arc.
+    \item A TM can accept by \textbf{final state}, $L(M) = \{w | q_0 w \vdash ^* I, \text{ where $I$ is an ID with final state} \} $,
+    
+    Or by \textbf{halting}, $H(M) = \{w | q_0 w \vdash ^* I, \text{ and there is no move possible from ID $I$} \}$
+    \item \textbf{Recursively Enumerable (RE) languages} are those accepted by TM's, i.e. $L$ is RE if, when presented with a finite input string $w$, will halt and accept if $w \in L$, but may not halt o.w.
+    \item Algorithm: a TM that always halts, whether it accepts or not. 
+    \item \textbf{Recursive language (Decidable)}: If $L = L(M)$ for some TM $M$ that is an algorithm, we say $L$ is a recursive language. That is,
+        \begin{enumerate}
+            \item If $w\in L$ then $M$ accepts and therefore halts.
+            \item If $w\notin L$ then $M$ halts, but never enters an
+            accepting state.
+        \end{enumerate}
+    \item \textbf{Undecidable}: If $L$ is not recursive, we say it is undecidable.
+    \item \textbf{Non-deterministic Turing Machine (NTM)}: there are multiple allowed transitions
+instead of a single allowed transition at each step.
+\end{itemize}
+
+\subsubsection{Results}
+\begin{itemize}
+    \item $L(M) \implies H(M^\prime):$ Modify $M$ to become $M^\prime$ as follows, 
+    \begin{enumerate}
+        \item For each accepting state of $M$, remove any moves, so $M^\prime$ halts in that state.
+        \item Avoid having $M^\prime$ accidentally halt: (1) Introduce a new state $s$, which runs to the right forever; that is $\delta (s, X) = (s, X, R) \forall X$, (2) If $q$ is not accepting and $\delta(q, X)$ is undefined, let $\delta (q, X) = (s, X, R).$
+    \end{enumerate}
+    \item $H(M) \implies L(M^{\prime\prime}):$ Modify $M$ to become $M^{\prime\prime}$ as follows, 
+    \begin{enumerate}
+        \item Introduce a new state $f$, the only accepting state of $M^{\prime\prime}$
+        \item $f$ has no moves.
+        \item If $\delta(q, X)$ is undefined for any state $q$ and symbol $X$, define it by $\delta(q, X) = (f, X, R)$.
+    \end{enumerate}
+    \item Regular language $\implies$ CFL $\implies$ recursive language (use CYK) 
+    \item NTM's and DTM's are equivalent. For any nondeterministic TM, there is a deterministic TM that simulates it. The idea is that we can describe one computation path of an NTM by the sequence of "choices" it makes; so our TM can first try all possible choices for the first step, then all possible sequences of two choices, and so on. It will eventually accept if and only if the original NTM had an accepting path.
+\end{itemize}

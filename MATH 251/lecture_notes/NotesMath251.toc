@@ -1,0 +1,37 @@
+\babel@toc {english}{}\relax 
+\contentsline {section}{\numberline {1}Fields and Rings}{3}{section.1}%
+\contentsline {section}{\numberline {2}Vector spaces}{3}{section.2}%
+\contentsline {section}{\numberline {3}Subspaces}{4}{section.3}%
+\contentsline {section}{\numberline {4}Linear Combinations and Systems of linear equations}{5}{section.4}%
+\contentsline {section}{\numberline {5}Linear Dependence and Linear Independence}{5}{section.5}%
+\contentsline {section}{\numberline {6}Bases and Dimensions}{6}{section.6}%
+\contentsline {section}{\numberline {7}Maximal Linearly Independent Subsets}{8}{section.7}%
+\contentsline {section}{\numberline {8}Sums}{9}{section.8}%
+\contentsline {section}{\numberline {9}Linear Maps}{10}{section.9}%
+\contentsline {subsection}{\numberline {9.1}Null space (nullity) and Range (rank)}{13}{subsection.9.1}%
+\contentsline {subsection}{\numberline {9.2}Matrix Representation}{13}{subsection.9.2}%
+\contentsline {subsection}{\numberline {9.3}Scaling transformation}{13}{subsection.9.3}%
+\contentsline {subsection}{\numberline {9.4}Projection}{14}{subsection.9.4}%
+\contentsline {subsection}{\numberline {9.5}Rotation}{15}{subsection.9.5}%
+\contentsline {subsection}{\numberline {9.6}Differential operators}{16}{subsection.9.6}%
+\contentsline {section}{\numberline {10}Linear forms}{16}{section.10}%
+\contentsline {section}{\numberline {11}Change of Basis}{18}{section.11}%
+\contentsline {section}{\numberline {12}Application: Coding Theory}{19}{section.12}%
+\contentsline {subsection}{\numberline {12.1}Problems}{20}{subsection.12.1}%
+\contentsline {subsection}{\numberline {12.2}Hamming Code}{20}{subsection.12.2}%
+\contentsline {section}{\numberline {13}Revisiting linear systems (chpt 3 in textbook)}{21}{section.13}%
+\contentsline {subsection}{\numberline {13.1}Hyperplanes}{21}{subsection.13.1}%
+\contentsline {subsection}{\numberline {13.2}Elementary Matrices}{22}{subsection.13.2}%
+\contentsline {subsection}{\numberline {13.3}Rank theorem for systems}{23}{subsection.13.3}%
+\contentsline {subsection}{\numberline {13.4}Invertible matrices}{25}{subsection.13.4}%
+\contentsline {subsection}{\numberline {13.5}The General Linear Group}{26}{subsection.13.5}%
+\contentsline {subsection}{\numberline {13.6}The symmetric group}{26}{subsection.13.6}%
+\contentsline {subsection}{\numberline {13.7}Permutation matrices}{26}{subsection.13.7}%
+\contentsline {section}{\numberline {14}The Determinant}{27}{section.14}%
+\contentsline {subsection}{\numberline {14.1}Determinant of order 2}{27}{subsection.14.1}%
+\contentsline {subsection}{\numberline {14.2}Determinant of order n}{27}{subsection.14.2}%
+\contentsline {subsection}{\numberline {14.3}Properties of the determinant}{28}{subsection.14.3}%
+\contentsline {subsection}{\numberline {14.4}Lebnitz formula}{29}{subsection.14.4}%
+\contentsline {section}{\numberline {15}Diagonalization}{30}{section.15}%
+\contentsline {subsection}{\numberline {15.1}Eigenvalues and Eigenvectors}{30}{subsection.15.1}%
+\contentsline {subsection}{\numberline {15.2}Multilinearity}{30}{subsection.15.2}%

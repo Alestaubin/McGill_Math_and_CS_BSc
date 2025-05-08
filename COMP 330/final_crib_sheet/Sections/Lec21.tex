@@ -1,0 +1,20 @@
+\subsection{\color{ForestGreen}NP-Hardness, Tautology, Node Cover, Knapsack}
+\subsubsection{Definitions}
+\begin{itemize}
+    \item The \textbf{TAUT}: given a Boolean formula, is it a tautology? A \textbf{Tautology} is a boolean formula that is always true, regardless of variable assignments.
+    \item \textbf{coNP}: A problem whose complement is in NP is said to be in Co-NP.
+\end{itemize}
+
+\subsubsection{Results} 
+\begin{itemize}
+    \item $P$ is closed under complementation. 
+    \item $P\subseteq coNP$
+    \item $P=NP\implies P=NP=coNP$
+    \item $TAUT\in coNP$ : $\overline{TAUT}$ is the set of boolean formulas that are not Tautologies. $\overline{TAUT} \in NP$ because finding an assignment that does not satisfy your formula can be done in polynomial time with a NTM. Thus $TAUT\in coNP.$
+    \item $TAUT$ is NP-hard: Take any Boolean formula $F$ and convert it to $\neg (F)$. $F$ is satisfiable if and only $\neg(F)$ is not a tautology. If we had a polytime algorithm to test whether $\neg(F)$ were a tautology, we could solve SAT in polytime and $P=NP.$
+    \item Vertex Cover (VC) is NPC. Reduction from 3SAT. For each clause $(X+Y+Z)$ construct a “column” of three nodes, all connected by vertical edges. Add a horizontal edge between nodes that represent any variable and its negation. Budget = twice the number of clauses. If we construct from 3SAT instance $F$ a graph $G$ and a budget $k$, then $G$ has a node cover of size $k$ if and only if $F$ is satisfiable.
+    \item $\overline{SAT}:= \{x \in \{0, 1\}^* | x$ is either an invalid encoding of a formula, or encodes an unsatisfiable boolean formula\}.  
+    \item The real \textbf{Knapsack problem}: Given a list $L$ of integers and a budget $k$, is there a subset of $L$ whose sum is exactly $k$? Is NPC.
+
+
+\end{itemize}

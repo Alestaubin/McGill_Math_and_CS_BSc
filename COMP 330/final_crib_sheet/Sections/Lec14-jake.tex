@@ -1,0 +1,10 @@
+\subsection{\color{ForestGreen}Undecidability, Turing Machines, RE languages}
+\subsubsection{Definitions}
+\begin{itemize}
+    \item A TM is a 7-tuple \( (Q, \Sigma, \Gamma , \delta , q_0, B, F) \), where \( \Gamma \) is the tape alphabet, \( B \in  \Gamma - \Sigma \) is the blank symbol. 
+    \item \( \delta (q, Z) \) is either undefined or a triple \( (p, Y, D) \) where \( p \) is a state, \( Y \) is the new tape symbol to be written over \( Z \), and \( D \) is the direction (L or R). If \( \delta (q, Z) = (p, Y, D) \), then in state \( q \), scanning \( Z \) under the tape head, the TM: changes the state to \( p \), replaces \( Z \) by \( Y \) on the tape, moves the head one cell in direction \( D \). 
+    \item ID's are below. If \( \delta (q, Z) = (p, Y,R) \) then \( \alpha q Z \beta \vdash \alpha Y p \beta \) (if \( Z \) is blank, \( \alpha q \vdash \alpha Y p \). If \( \delta (q, Z) = (p , Y, L) \) then for any \( X \), \( \alpha X q Z \beta \vdash \alpha p XY \beta \) and \(  q Z \beta \vdash p B Y \beta \).
+    \item \( L(M) = \{ w : q_0w \vdash^{*} I \}  \) (\( I \) is an ID with a final state); we can also accept by halting: \( H(M) = \{ w : q_0 w \vdash^{*} I \}  \) where there is no possible move from ID I. \( L(M) = H(M) \) always.
+    \item The class of all languages accepted by some TM are \textbf{Recursively enumerable} (or Turing Recognizable). An \textbf{algorithm} is a TM that is guaranteed to halt whether or not it accepts the input. If \( L = L(M) \) for a TM \( M \) that is an algorithm, wer say \( L \) is a \textbf{recursive language}. (every CFL is a recursive language, every regular language is recursive)
+\end{itemize}
+\subsubsection{Results}

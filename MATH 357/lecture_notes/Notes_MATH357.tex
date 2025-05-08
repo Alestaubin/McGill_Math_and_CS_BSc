@@ -1,0 +1,771 @@
+\documentclass{tufte-handout}
+
+\makeatletter
+\renewcommand{\maketitlepage}{%
+\begingroup%
+\setlength{\parindent}{0pt}
+
+{\fontsize{24}{24}\selectfont\textit{\@author}\par}
+
+\vspace{1.75in}{\fontsize{36}{54}\selectfont\@title\par}
+
+\vspace{0.5in}{\fontsize{14}{14}\selectfont\textsf{\smallcaps{\@date}}\par}
+
+\vfill{\fontsize{14}{14}\selectfont\textit{\@publisher}\par}
+
+\thispagestyle{empty}
+\endgroup
+\newpage
+}
+\makeatother
+
+% Book metadata
+\title{Honours Statistics Notes}
+\date{\today}
+\author{Alexandre St-Aubin}
+\publisher{Taught by Masoud Asgharian}
+
+\usepackage{amsmath}
+\usepackage{amsthm} %needed for the proofs 
+\usepackage{amssymb}
+\usepackage{xcolor} %for heading colors
+\usepackage{titling}
+\usepackage{thmtools}
+
+%For plots
+\usepackage{pgfplots}
+\pgfplotsset{compat = newest}
+
+\newtheoremstyle{mytheoremstyle}
+    {6pt} % space above
+    {6pt} % space below
+    {\normalfont} % body font
+    {} % indent amount
+    {\bfseries\color{blue}} % theorem head font
+    {.} % punctuation after theorem head
+    {1em} % space after theorem head
+    {\thmname{#1}\thmnumber{ #2}\thmnote{ (#3)}} % theorem head spec
+
+\newtheoremstyle{corlstyle}
+    {6pt} % space above
+    {6pt} % space below
+    {\normalfont} % body font
+    {} % indent amount
+    {\textit{}} % theorem head font
+    {.} % punctuation after theorem head
+    {1em} % space after theorem head
+    {\thmname{#1}\thmnumber{ #2}\thmnote{ (#3)}} % theorem head spec
+
+% Define the theorem environment
+\declaretheorem[style=mytheoremstyle,name=Theorem,numberwithin=section]{theorem}
+
+% Define the corollary environment linked to the theorem
+\declaretheorem[style=corlstyle,name=Corollary,numberlike=theorem,parent=theorem]{corollary}
+
+\declaretheorem[style=corlstyle,name=Remark,numberlike=theorem]{remark}
+
+\declaretheorem[style=corlstyle,name=Example,numberlike=theorem]{example}
+
+% Define the lemma environment linked to the theorem
+\declaretheorem[style=mytheoremstyle,name=Lemma,numberlike=theorem]{lemma}
+
+% Define the proposition environment linked to the theorem
+\declaretheorem[style=mytheoremstyle,name=Proposition,numberlike=theorem]{proposition}
+
+% Define the definition environment linked to the theorem
+\declaretheorem[style=mytheoremstyle,name=Definition,numberlike=theorem]{definition}
+
+\newcommand\sol{%
+  \\ 
+  \\
+  \textit{Solution:}\\%
+}
+\newcommand{\indep}{\perp \!\!\! \perp}
+
+\DeclareMathOperator{\var}{Var}
+\DeclareMathOperator{\cov}{Cov}
+
+%\geometry{showframe} % display margins for debugging page layout
+
+\usepackage{graphicx} % allow embedded images
+  \setkeys{Gin}{width=\linewidth,totalheight=\textheight,keepaspectratio}
+  \graphicspath{{graphics/}} % set of paths to search for images
+\usepackage{booktabs} % book-quality tables
+\usepackage{units}    % non-stacked fractions and better unit spacing
+\usepackage{multicol} % multiple column layout facilities
+\usepackage{lipsum}   % filler text
+\usepackage{fancyvrb} % extended verbatim environments
+  \fvset{fontsize=\normalsize}% default font size for fancy-verbatim environments
+
+% Prints argument within hanging parentheses (i.e., parentheses that take
+% up no horizontal space).  Useful in tabular environments.
+\newcommand{\hangp}[1]{\makebox[0pt][r]{(}#1\makebox[0pt][l]{)}}
+
+%%
+% Prints an asterisk that takes up no horizontal space.
+% Useful in tabular environments.
+\newcommand{\hangstar}{\makebox[0pt][l]{*}}
+
+%%
+% Prints a trailing space in a smart way.
+\usepackage{xspace}
+
+% Generates the index
+%\usepackage{makeidx}
+%\makeindex
+
+% Standardize command font styles and environments
+\newcommand{\doccmd}[1]{\texttt{\textbackslash#1}}% command name -- adds backslash automatically
+\newcommand{\docopt}[1]{\ensuremath{\langle}\textrm{\textit{#1}}\ensuremath{\rangle}}% optional command argument
+\newcommand{\docarg}[1]{\textrm{\textit{#1}}}% (required) command argument
+\newcommand{\docenv}[1]{\textsf{#1}}% environment name
+\newcommand{\docpkg}[1]{\texttt{#1}}% package name
+\newcommand{\doccls}[1]{\texttt{#1}}% document class name
+\newcommand{\docclsopt}[1]{\texttt{#1}}% document class option name
+\newenvironment{docspec}{\begin{quote}\noindent}{\end{quote}}% command specification environment
+\usepackage{fancyvrb}
+\fvset{fontsize=\normalsize}
+
+\setcounter{secnumdepth}{4} %to set the section numbering
+
+\begin{document}
+
+\maketitlepage% this prints the handout title, author, and date
+
+% r.5 contents
+\tableofcontents
+\newpage
+\section{Review of Probability Concepts}%
+  \label{sec:Review of Probability Concepts}
+  \begin{definition}[Probability Space]
+  The triple $(\Omega, S, P)$ is called a \textbf{Probability Space}, with $(\Omega, S)$ denoting the \textbf{Sample Space}, and 
+  \begin{enumerate}
+    \item[\it (i)] $\Omega$ is the set of all possible outcomes of the experiment. Any element in $\Omega$ is called a \textbf{Sample Point}. 
+    \item[\it (ii)] $S$ is a $\sigma$-field (same as a $\sigma-$ algebra ) of subsets of $\Omega$. Any set $A \in S$ is an \textbf{Event}. 
+    \item[\it (iii)] $P$ is a \textbf{Probability Measure} if the following hold: 
+    \begin{enumerate}
+      \item[\it (a)] $P(A)\geq 0 \; \forall A \in S$. 
+      \item[\it (b)] $P(\Omega) = 1.$
+      \item[\it (c)] If $\{A_i\}_I \subset S$ are disjoint, then $P\left(\sum^{n}_{i=1} A_i\right) = \sum^{n}_{i=1} P(A_i)$ 
+    \end{enumerate}
+  \end{enumerate}
+\end{definition}
+\begin{definition}[Random Variable]
+  Let $(\Omega, S)$ be a \textit{sample space,} then a finite, single-valued function that maps $\Omega$ onto $\mathbb{R}$ is called a \textbf{Random Variable} (RV) if the inverse images under $X$ of all \textit{Borel} sets in $\mathbb{R}$ are events, that is, if \marginnote{A RV is called \textit{Discrete} if it takes on countably many values.}
+  $$X^{-1}(B) = \{ \omega \mid X(\omega)\in B \} \in S \quad \forall B  \in \mathfrak{B} $$
+\end{definition}
+\begin{definition}[Discrete Probability Measure]
+  Let $S \in \Omega$ be countable, $p_s \in [0, \infty)$, $s\in S$ a collection of numbers such that $\sum_{s \in S}p_s = 1. $, then $P: P(\Omega) \to [0,1]$ such that
+  $$P(A) =\sum_{s\in S\cap A} p_s =   \sum_{s\in S} p_s \chi_A(s) $$
+  is a probability measure on $(\Omega, P(\Omega))$. It is called a \textbf{discrete probability measure} with support $S$.\marginnote{A discrete probability measure is often called a discrete distribution.}
+  The function $f_X: \Omega \to \mathbb{R}$ defined by 
+  $$f_X(\omega) =  \begin{cases}
+    0, &\text{ if } \omega \notin S \\ 
+    p_s, &\text{ otherwise.} 
+  \end{cases} $$
+  is called the PMF (density of $P$ with respect to the counting measure).
+\end{definition}
+
+\begin{definition}[Probability Distribution Function]
+  A probability distribution function $F$ is any function $F: \mathbb{R} \to \mathbb{R}$ such that\marginnote{A probability measure is called continuous if its distribution function is continuous. In general, $F$ has at most countably many discontinuities}
+  \begin{enumerate}
+    \item[\it (i)] $F$ is non-decreasing. 
+    \item[\it (ii)] $F$ is right-continuous. 
+    \item[\it (iii)] $\lim_{n \to -\infty} F(n) = 0$ and $\lim_{n \to \infty} F(n) = 1.$ 
+  \end{enumerate}
+\end{definition}
+\begin{definition}[Probability Density Function]
+  A function $F_X: \mathbb{R}\to \mathbb{R}$ is called a $\mathcal{R}$ \textbf{Probability Density Function} $((\mathcal{R})\;PDF)$ if: 
+  \begin{enumerate}
+    \item[\it (i)] $F_X(x) \geq 0 \; \forall x \in \mathbb{R}$. 
+    \item[\it (ii)] $F_X$ is $\mathcal{R}$-integrable on $\mathbb{R}$ and $\int_{{-\infty}}^{{\infty}} {f(t)} \: d{t} {=1.}$ 
+
+  \end{enumerate}
+\end{definition}
+\begin{definition}[Distribution of a RV]
+  Let $(\Omega, \mathcal{A}, P)$ a \textit{probability space} and $(\mathcal{X, B} )$ a \textit{measurable space.} Also, let $X: \Omega \to \mathcal{X}$ be $\mathcal{A}-\mathcal{B}$ measurable. Then, \marginnote{A real-valued random variable is continuous if its distribution $P^X$ has a density\\ 
+  For a real-valued RV $X:$ if $X$ is discrete, then $P^X$ is uniquely determined by its PMF $f_X$. If $X$ is continuous, $P^X$ has density $f_X$. \\ 
+  $P^X(\mathcal{X}) = P(\{\omega \mid X(\omega) \in \mathcal{X}\})=P(\Omega) = 1$}
+
+  $$P^X: \mathcal{B}\to \mathbb{R}$$$$  P^X(B) =P(X^{-1}(B)) = P(\{ \omega \mid X (\omega) \in B \})$$
+  is a probability measure on $( \mathcal{X,B})$. It is called the \textbf{image measure} of P or
+  \textbf{distribution} of $X$.
+\end{definition}
+\begin{remark} 
+ If $X$ is a discrete real-valued random variable and $g: \mathbb{R} \to \mathbb{R}$ measurable, then $Y = g(x)$ is also discrete and its PMF can be computed as follows if $g$ is 1-1: 
+  $$f_Y (y) = P (Y = y) = P(g(X) = y ) = \sum^{}_{x: g(x) = y} f_X(x) = P(X= g^{-1} (y)) $$
+
+\end{remark}
+\begin{definition}[Expected Value of Discrete RV]
+  Let $X$ be a discrete real-valued RV with PMF $f_X$, the \textbf{Expected Value} of $X$ is given by 
+  $$E[X] = \sum_{x \in \{ X(\omega) : \omega \in \Omega \}} x f_X (x), $$
+provided
+$$ \sum_{x \in \{ X(\omega) : \omega \in \Omega \}} |x| f_X (x) < \infty, $$
+otherwise it is not defined.
+\end{definition}
+\begin{definition}[Expected Value of RV with Density]
+  Let $X$ be a RV with $\mathcal{R}$ density $f_X$ (PDF). Then the \textbf{Expected Value} of $X$ is given as 
+  $$E[X] = \int_{-\infty}^{\infty} x f_X (x) \;dx,$$
+  provided 
+  $$\int_{-\infty}^{\infty} |x| f_X (x) \;dx < \infty, $$
+  otherwise it is not defined.
+
+\end{definition}
+\begin{lemma}[Expectation of Symmetric Distributions]
+  Suppose that $X$ has $\mathcal{R}$ density $f_X$ such that 
+  \begin{enumerate}
+    \item[\it (i)]  $\int_{-\infty}^{\infty} |x| f_X (x) \;dx < \infty, $
+    \item[\it (ii)] $\exists a \in \mathbb{R}$ such that $\forall x \in \mathbb{R}$, $f_X(x +a) = f_X(a -x)$,
+ 
+  \end{enumerate}
+   then $$E[X] =a $$
+\end{lemma}
+\begin{theorem}[Expectations of Functions of RVs]
+  Let $X$ be a RV and $g: \mathbb{R}\to \mathbb{R}$ borel-measurable, then if $Y = g(X)$, 
+  \begin{enumerate}
+    \item[\it (i)] If $X$ is \textit{Discrete,} and $E[Y]$ exists, then 
+    $$E[Y] = E[g(x)] = \sum g(x) f_X (x) $$
+    \item[\it (ii)] If $X$ has $\mathcal{R}$ \textit{Density} $f_X$ and $g$ is strictly monotone and continuously differentiable on $(a,b) = \{ x : f_X(x) > 0 \}$, and $E[g(X)]$ exists, then 
+    $$E[Y] = E[g(X)] = \int_{-\infty}^{\infty} g(x) f_X(x) \; dx $$
+  \end{enumerate}
+  
+\end{theorem}
+\begin{lemma}[Properties of Expectations] $  $
+  \begin{enumerate}
+    \item[\it (i)] $E[g_1(X) + ... + g_n(X)] = E[g_1(X)] + ... + E[g_n(X)]$, provided each $E[g_i(X)]$ exists. \marginnote{The expected value of the sum of random variables is equal to the sum of their individual expected values, regardless of whether they are independent.}
+    \item[\it (ii)] $E[aX] = a E[X], \; a \in \mathbb{R}$. 
+    \item[\it (iii)] $E[a] = a, \; a \in \mathbb{R}.$
+    \item[\it (iv)] if $X,Y$ are independent, then $E[XY] = E[X]E[Y]$, and in particular, for any measurable functions $g,f$, $E[f(X)g(Y)] = E[f(X)]E[g(Y)]$ 
+    \item[\it (v)] $E[X] = E[E[X|Y]]$.
+  \end{enumerate}
+\end{lemma}
+\begin{theorem}[Properties of Variance]
+  Let $X$ be a RV with $E[|X|] < \infty, $ then\cite{variance}
+  \begin{enumerate}
+    \item[\it (i)] $\var(X)$ exists $\iff \; E[X^2]< \infty.$
+    \item[\it (ii)] $\var(X) = E[X^2]-(E[X])^2.$
+    \item[\it (iii)] $\var (X) = 0 \iff P(X=c) = 1$ for some $c\in \mathbb{R}.$
+    \item[\it (iv)] $\var (a X + b) = a^2 \var (X) .$
+    \item[\it (v)] $\min_{c\in \mathbb{R}} E[(X -c)^2] = \var (X) = E[(X -E[X])^2].$
+    \item[\it (vi)] If $X,Y $ are independent random variables, then $$\var(X+Y) = \var(X)+\var (Y) $$
+    However, if $X,Y$ are not independent, then 
+    $$\var(X+Y) = \var(X) + \var (Y) +2\cov (X,Y) $$
+    \item[\it (vii)] $\var(X) = \var(E[X|Y])+ E[\var (X|Y)] \geq \var(E[X|Y])$
+  \end{enumerate}
+  
+\end{theorem}
+
+\begin{definition}[Moments of Distribution]
+  Let $X$ be a RV, $n \in \mathbb{N}, \; \alpha \in \mathbb{R}.$  If they exist, the following expectations have special names.  
+  \begin{enumerate}
+    \item[\it (i)] $E[X^n]$ is the $n^{th}$ \textit{raw} moment of $X.$ A raw moment is a moment about the origin. \marginnote{Central moments are useful because they allow us to quantify properties of distributions in ways that are \textbf{location-invariant}. E.g. we may be interested in comparing the variability in height of adults versus children. We want to measure which group has greater variability while disregarding the heights of people in each group. }
+    \item[\it (ii)] The $n^{th}$ \textit{central} moment of $X$ is about the distribution's mean $\mu_x$ and is given by  
+    $$m_n=E[(X-\mu_x)^n]  = \int_{-\infty}^\infty (x -\mu_x)^n f_X(x) \; dx $$
+    \item[\it (iii)] The $n^{th}$ \textit{standardized} moment is defined as the $n^{th}$ central moment normalized by the standard deviation raised to the $n^{th}$ power,
+    $$\bar m_n  = \frac{m_n}{\sigma_n} = E \left[ \left( \frac{X-\mu_x}{\sigma_x}  \right)^n \right],  $$
+    where $m_n$ is defined as in $(ii)$, and $$\sigma_n = \sigma_x^n = \left( \sqrt{E[(X-\mu_x)^2]} {} \right)^n $$ 
+    \item[\it (iv)] A \textit{sample} moment is an unbiased estimator of its respective raw, central, or standardized moment.\marginnote{Recall that, given a statistical model, parameters summarize data for an entire population, while statistics summarize data from a sample of the population. We compute the former exactly using a statistical model and estimate it from data using the latter.}
+  \end{enumerate}
+\end{definition}
+\begin{example}
+  For example, if we assume that $X \sim \mathcal{N}(\mu_x, \sigma^2_x)$ then the first raw moment is $E[X] = \mu_x$, and we estimate it with the sample mean.
+
+
+\end{example}
+\begin{definition}[First 5 Moments]$  $\newline 
+  \begin{enumerate}
+    \item The zeroth moment, $m_0$ represents the total mass of a distribution, and since probabilities are normalized quantities, it should always be equal to 1, 
+    $$m_0 =\bar m_0 = E[(X-\mu_x)^0] = \int_{-\infty}^\infty (x-\mu_x)^0 f_X(x)\; dx = \int_{-\infty}^\infty f_X(x)\; dx = 1    $$
+    \item The first \textit{raw} moment, the \textbf{expectation} of $X$, is
+    $$\mu_1 = \mu_x = E[X] = \int_{-\infty}^\infty x f_X(x)\; dx  ,$$
+    it is the center of mass of a probability distribution. The first central and standardized moments are less interesting because they are always zeros. 
+    \item The second \textit{central} moment is called the \textbf{variance} of a random variable $X$, denoted $\var (X),$
+    $$m_2 = \var (X) = \int_{-\infty}^\infty (x - \mu_x)^2 f_X(x) \; dx $$
+The second central moment increases quadratically as mass gets further away from the distribution’s mean. In other words, variance captures how spread out a distribution is or its scale parameter. Points that are further away from the mean than others are penalized disproportionally. High variance means a wide distribution, which can loosely be thought of as a “more random” random variable. 
+    \item The third \textit{standardized} moment, called \textbf{skewness}, measures the relative size of the two tails of a distribution,
+    $$\bar m_3 = \mathbb{S}[X] = E[Z^3] = E \left[ \left( \frac{X-\mu_x}{\sigma_x}  \right)^3 \right], $$
+    where $Z$ is the \textit{standard score} or \textit{z-score.}
+    $$Z = \frac{X-\mu_x}{\sigma_x} $$
+    \textbf{Skewness} quantifies the relative size of the two tails, consider this: any data point less than a standard deviation from the mean results in a \textit{standard score} less than 1; this is then raised to the third power, making the value even smaller. In other words, data points less than a standard deviation from the mean contribute very little to the final calculation of skewness. Since the cubic function preserves sign, if both tails are balanced, the skewness is zero. Otherwise, the skewness is positive for longer right tails and negative for longer left tails.
+
+While a symmetric distribution always has a skewness of zero, the opposite claim is not always true: a distribution with zero skewness may be asymmetric. We’ll see an example at the end of this section.
+    \item The fourth \textit{standardized} moment, \textbf{kurtosis}, measures the combined weight of the tails relative to the distribution. If either or both tails increases, the kurtosis will increase.
+    $$\bar m_4 = \mathbb{K}[X] = \frac{\mu_4}{\sigma_4} =E \left[ \left( \frac{X-\mu_x}{\sigma_x}  \right)^4 \right]  $$
+Unlike skewness’s cubic term which preserves sign, kurtosis’s even power means that the metric is always positive and that long tails on either side dominate the calculation. Just as we saw with skewness, kurtosis’s fourth power means that standard scores less than 1—again, data near the peak of the distribution—only marginally contribute to the total calculation. In other words, kurtosis measures tailedness, not peakedness. 
+  \end{enumerate}
+  
+\end{definition}
+\begin{definition}[Moment Generating Function]
+  Let $X$  be a random variable. The moment generating function (MGF) of $X$ is given as  $$M_X(s) = E[e^{sX}] = 
+  \begin{cases}
+    \int_{-\infty}^\infty e^{sX} f_X(x) \; dx, &\text{ if $X$ has a density. } \\
+    \sum_{x} e^{sX} f_X(x) , &\text{ if $X$ is discrete. }
+  \end{cases} $$
+  provided that $M_X(s)$ exists in a neighbourhood $(-\varepsilon , \varepsilon )$ for some $\varepsilon > 0$ such \marginnote{In other words, the moment-generating function of X is the expectation of the random variable $e^{sX}$.}
+ that it is finite and defined.   
+
+
+
+To see why it is called a “moment-generating function”, note that
+  $$ \frac{d^k}{d {t^k}} {M_X(t)} = E \left[   \frac{d^k}{d {t^k}} e ^{tX}\right] = E[X^k e^{tX}], $$
+  thus,
+  $$\left. \frac{d^k}{d {t^k}} M_X(t) \right|_{t=0}  = E[X^k]. $$
+  In other words, the $k^{th}$ derivative of the MGF evaluated at $t=0$ is the $k^th$ moment. This also means that the MGF’s Taylor series expansion,
+  $$E[e^{tX}] = E \left[ \sum^{\infty}_{k=1} \frac{1}{k!} t^k X^k  \right] = \sum^{\infty}_{k=1} \frac{1}{k!} t^k E[X^k]   $$ is really an infinite sum of weighted raw moments.  
+\end{definition}
+\begin{definition}[Characteristic Function]
+  Let $X$ be a RV, the \textbf{Characteristic function} of $X$ is given by $\phi_X(t) = E[e^{itX}]$ for $t \in \mathbb{R}$. It is always defined.  
+\end{definition}
+\subsection{Multiple Random Variables}%
+  \label{sub:Multiple Random Variables}
+  
+\begin{definition}[Random Vector]
+  A \textbf{Random Vector} $X = (X_1, ..., X_n)$ is a measurable function from $(\Omega, \mathcal{A}, P)$ to $\mathbb{R}^n.$ 
+\end{definition}
+\begin{definition}[Multivariate Distribution Function]
+  A \textbf{Multivariate distribution function} $F: \mathbb{R}^n \to [0,1]$ is defined by 
+  $$F(X_1,...,X_n) = P (X_1< x_1, ..., X_n< x_n) $$
+\end{definition}
+\begin{definition}[Independence]
+  The RV $X_1 , X_2$ are called \textbf{independent} if their joint distribution function $F(X_1, X_2)$ is of the form
+  $$F_{(X_1, X_2)}(x_1, x_2) = F_{X_1}(x_1)F_{X_2}(x_2) \quad \forall x_1,x_2 \in \mathbb{R}$$
+The variables $X_i$, $i \in I$ where $I$ is an arbitrary index set, are called \textbf{independent} if for any $k \in \mathbb{N }$ and any collection $i_1,...,i_k\in I$, then 
+  $$F_{(X_{i_1}, ..., X_{i_k})}(x_{i_1},...,x_{i_k})= \prod^{k}_{i=1} F_{X_{ij}}(x_{ij}), \quad (x_{i_1}, ..., x_{i_k}) \in \mathbb{R}^k $$
+\end{definition}
+\begin{corollary}
+  Suppose $X_1,... ,X_n$ are random variables and $g_1, ..., g_n$ are (Borel) measurable functions, $g_i : \mathbb{R} \to \mathbb{R}$. Then, if $X_1,... ,X_n$ are independent,
+$g_1(X_1),... , g_n(X_n)$ are also independent.
+\end{corollary}
+\begin{definition}[Independently and Identically Distributed RVs]
+  A sequence of RVs $X_1, X_2, X_3,...$ is called independent and\marginnote{Notation : if $X_1, X_2$ are independent, we write $X_1 \indep X_2$ } identically distributed (\textbf{iid}) if $\{X_i\}_{i \in \mathbb{N}}$ are independent and $X_i$ has the same distribution for all $i.$ 
+  
+\end{definition}
+
+\begin{remark} 
+  If $X_1, ..., X_n$ are independent and $M_{X_i}(t)$ exists for $| t| < \varepsilon \forall i \in \{1,..., n\}$, then 
+  $$M_X(t) = \prod_{i = 1}^n M_{X_i} (t) $$
+\end{remark}
+\begin{definition}
+  Let $(X_1,..., X_n) = X,\; g: \mathbb{R}^n \to \mathbb{R}$ a borel-measurable function, then $g(X)$ is a random variable. The \textbf{Expectation} is 
+  $$E[g(X_1,...,X_n)]=  
+  \begin{cases}
+    \sum^{  }_{X_1, ...,X_n} g(x_1,...,x_n)f_X(x_1,...,x_n), &\text{ if $X$ is discrete } \\
+    \int \hdots \int_{-\infty}^\infty g(x_1,...,x_n)f_X(x_1,...,x_n) \; d{X_1} \hdots dX_n, &\text{ if $X$ has density.}
+  \end{cases}$$
+\end{definition}
+\begin{definition}[Moments and Central Moments]
+  Let $(X,Y)$ be a random vector, then 
+  \begin{enumerate}
+    \item[\it (i)] The \textbf{moment} of $(X,Y)$ of order $(j+k)$ is$$E[X^jY^k],\; j,k \in \mathbb{N}.$$ 
+    \item[\it (ii)] The \textbf{central moment} $(X,Y)$ of order $(j+k)$ is $$E[|X - E[X]|^j | Y- E[Y]|^k], \; j,k \in \mathbb{N}. $$
+  \end{enumerate}
+ Provided all expectations above are finite.  
+\end{definition}
+\begin{theorem}[Holder Inequality]
+  Let $p,q > 1$ such that $\frac{1}{p} + \frac{1}{q} = 1,$ if $E[|X|^p], E[|Y|^q] < \infty, $ then \marginnote{For the case $p = q =2 $, we have the Cauchy-Schwartz inequality: $E[|XY|] \leq \sqrt{E[X^2]} \sqrt{E[Y^2]} {} {}$.}
+  $$E[|XY|] \leq (E[|X|^p])^{\frac{1}{p}}(E[|Y|^q])^{\frac{1}{q} } $$
+\end{theorem}
+\begin{definition}[Covariance]
+  Let $(X, Y )$ be a random vector. Then $E[(X − E[X])(Y − E[Y] )]$ is called the covariance of $(X, Y )$, denoted Cov$(X, Y )$ provided it exists.
+\end{definition}
+\begin{lemma}[Properties of Covariance]
+  $  $\newline
+  \begin{enumerate}
+    \item[\it (i)] $\cov(X,Y)$ exists if $E[X^2], E[Y^2]< \infty.$
+    \item[\it (ii)] $\cov(X,Y) = E[XY]- E[X]E[Y]$ 
+   \item[\it (iii)] $\cov (X+ Y , Z) = \cov (X,Z) + \cov (Y, Z)$
+    \item[\it (iv)] $\cov (a, X) = E[aX] -a E[X] \; \forall a \in \mathbb{R}$ 
+  \end{enumerate}
+\end{lemma}
+\begin{definition}[Pearson Correlation Coefficent]
+  Let $(X,Y)$ be a random vector, and $\cov(X,Y)$ exist, then 
+  $$ \rho(X,Y) :=\frac{\cov(X,Y)}{\sqrt{\var (X)\var (Y)} } $$
+  is called the \textbf{Pearson Correlation Coefficient.}
+  
+\end{definition}
+\begin{lemma}[Properties of Correlation]$  $\\
+  \begin{enumerate}
+    \item[\it (i)] $|\rho(X,Y)| \leq 1$
+    \item[\it (ii)] If $X, Y$ are independent, then $\rho(X,Y) = 0$
+    \item[\it (iii)] $\rho (-X, Y) = - \rho (X,Y)$
+    \item[\it (iv)] $\rho (X,Y) = \rho (Y,X)$
+    \item[\it (v)] $\rho = \pm 1 \iff X = aY + b$ almost surely
+ 
+  \end{enumerate}
+  
+\end{lemma}
+\begin{definition}[Expectation of Random Vectors]
+  Let $X = (X_1, ..., X_n)^T$ be a random vector such that $E[X_i]< \infty \; \forall i,$ then 
+  $$E [(X_1, ..., X_n)] =E[X]= \begin{pmatrix}
+    E[X_1] \\ 
+    \vdots\\ 
+    E[X_n]
+  \end{pmatrix}   $$
+  
+\end{definition}
+\begin{theorem} \label{label}
+  Let $X$ a random vector as above, then for any $a = (a_1,..., a_n)^T \in \mathbb{R}^n$, 
+  $$E[a^T X] = E[a_1X_1+ ... + a_n X_n] = a^T E[X] $$
+\end{theorem}
+\begin{theorem} \label{label}
+  If $X$ is a random vector as above, and $X_1,..., X_n$ \textbf{Are Independent}, then$$E \left[\prod^{n}_{i=1} X_i \right]  = \prod^{n}_{i=1} E[X_i] $$
+\end{theorem}
+\begin{theorem} \label{label}
+  Let $X = (X_1,...,X_n)^T$ be a random vector such that $E[X_i]< \infty,$ then for any $a = (a_1, ..., a_n) \in \mathbb{R}^n$, 
+  $$\var (a_1 X_1+...+ a_n X_n) = \var(a^TX) = a^T X a $$
+\end{theorem}
+\subsection{Limit Theorems}%
+  \label{sub:Limit Theorems}
+  
+\begin{definition}[Converging in Probability]
+  Let $\{X_n\}$ be a sequence of RVs defined on some \textit{probability space} $(\Omega, S, P)$. We say that a sequence $\{X_n\}$ \textbf{converges in probability} to the RV $X$ if for every $\varepsilon > 0,$ 
+  $$P\{|X_n- X|> \varepsilon\}\to 0 \quad \text{as} \quad n\to \infty ,  $$
+  and we write 
+  $$X_n \overset{P}{\to} X. $$
+
+\end{definition}
+\begin{definition}[Converging Almost Surely]
+  Let $X_1,X_2,...$ an arbitrary sequence of random variables, and $X$ a RV. Then we say $X_n \to X$ \textbf{almost surely} if and only if $P\{ \omega \mid \lim_{n \to \infty} X_n(\omega) = X(\omega)\} = 1, $ in which case we write $$X_n \overset{a.s.}{\to}X.$$ 
+\end{definition}
+\begin{definition}[Converging in Distribution (in Law)]
+  Let $\{X_n\}$ be a collection of random variables and $X$ be a RV, then $X_n$ converges in law or in distribution to $X$ as $n \to \infty$ if for any continuity point $x$ of $F_X$,$$F_{X_n}(x)\overset{n\to \infty}{\longrightarrow} F_X(x), $$
+  in other words, we have pointwise convergence of the distribution function, and we write 
+  $$X_n\overset{\mathcal{D}}{\to}X \quad \text{or}\quad X_n \rightsquigarrow X $$
+  
+\end{definition}
+\begin{theorem}[Central Limit Theorem]
+  Consider the proper rescaling $\sqrt{n} (\overline{X_n}-\mu)$, where $W_n$ is a sequence of \textit{iid} RVs such that $E[X_1] = \mu < \infty$, and $\var(X_1)= \sigma^2 < \infty. $ By the \textbf{Weak Law of Large Numbers}, we have $ \overline{X_n} \overset{P}{\to} \mu.$ Then, 
+  $$\sqrt{n} \left( \frac{\overline{X_n}-\mu}{\sigma} \right)\overset{\mathcal{D}}{\to} \mathcal{N}(0,1), $$
+  i.e. converges in distribution. 
+\end{theorem}
+
+\section{Sample Moments and Their Distributions}
+\subsection{Random Sampling}
+\begin{definition}[Random Sample]
+  Let $X$ be a \textit{random variable} (RV) with \textit{Distribution Function} (DF), and let $X_1, ..., X_n$ be \textit{iid} RVs with common DF $F$.  Then the collection $X_1, ..., X_n$ is known as a \textbf{Random Sample} of size $n$ from the DF $F$.  
+\end{definition}
+\begin{definition}[Statistic]
+  Let $X_1, ..., X_n$ be n independent observations on an RV $X$ and let $f: \mathbb{R}^n \to \mathbb{R}^k$ a \textit{Borel-measurable} function. Then the RV $f(X_1, ..., X_n)$ is called a \textbf{Statistic}, provided that it is not a function of any unknown parameters. 
+\end{definition}
+If $X_1,..., X_n$ is a random sample from $F$, their joint distribution is given by 
+$$F^*(X_1,...,X_n) = \prod^{n}_{i=1} F(x_i) $$
+\begin{definition}[Some common statistics]  Let $X_1,..., X_n$ be a random sample from a DF $F$, then the statistic 
+  $$ \overline{X} := n^{-1} S_n = \sum^{n}_{i=1} \frac{X_i}{n} $$
+  is called the \textbf{Sample Mean} and 
+  $$S^2 := \sum^{n}_{i=1} \frac{(X_i - \overline{X} )^2}{n-1}$$ 
+  is called the \textbf{Sample Variance}, with $S$ the \textbf{Sample Standard Deviation.}  \marginnote{It should be remembered that sample statistics $(\overline{X}, S^2)$ are random variables, while population parameters $(\mu, \sigma^2)$ are fixed constants that are unknown most often than not. }
+
+\end{definition}
+\subsection{Sample Characteristics and Their Distributions}%
+  \label{sub:Sample Characteristics and Their Distributions}
+ In this section, we consider some commonly used sample characteristics and their distributions. 
+\begin{definition}[Sample/Empirical Distribution Function]
+  Let $$F^*_n(x) = n^{-1} \sum^{n}_{i=1} \varepsilon (x -X_i),  $$
+  where 
+  $$\varepsilon(x) = 
+  \begin{cases}
+    1, &\text{ if } x \geq 0\\
+    0, &\text{ otherwise.} 
+  \end{cases} $$Then $n F^*_n(x)$ is the number of $X_k$'s that are $\leq x$, and is called the \textbf{Sample/Empirical Distribution Function}.\marginnote{We note that $0 \leq F^*_n(x) \leq 1 \; \forall x$, is right continuous, non-decreasing, and $F^*_n(-\infty) = 0, \; F^*_n(\infty) = 1,$ hence is a \textit{Distribution Function.}} 
+\end{definition}
+\begin{theorem} \label{label}
+  The RV $F^*_n (x)$ has the \textit{probability function}
+  \begin{equation*}
+    \begin{split}
+      P \left( F^*_n(x) = \frac{j}{n}  \right) ={n \choose j} (F(x))^j (1 - F(x))^{n-j}, \quad j = 0,1,..., n
+    \end{split}
+  \end{equation*}
+  with mean 
+  \begin{equation*}
+    \begin{split}
+      E[F^*_n (x)] = F(x)
+    \end{split}
+  \end{equation*}
+  and variance 
+  \begin{equation*}
+    \begin{split}
+      \var(F^*_n (x)) = \frac{F(x) (1- F(x))}{n} 
+    \end{split}
+  \end{equation*}
+\end{theorem}
+\begin{corollary}
+  For each $x \in \mathbb{R}^n$, $F^*_n(x)\overset{P}{\to} F(x)$ as $n \to \infty$.
+\end{corollary}
+\begin{corollary}
+  For each $x \in \mathbb{R}$, 
+  $$\frac{\sqrt{n} (F^*_n(x) - F(x))}{\sqrt{F(x)(1-F(x))} }\overset{L}{\to} Z \quad \text{as} \quad n\to \infty $$ \marginnote{$Z$ is $\mathcal{N}(0,1)$. } 
+\end{corollary}
+\begin{proposition}[Chebychev's Inequality] \label{ineq:Chebychev}
+  $$P\{|F^*_n(x) - F(x) |> \varepsilon \}\leq \frac{\var (F^*_n(x))}{\varepsilon^2}  $$
+or equivalently, 
+  $$P\{(T_n - \theta)^2\geq \epsilon^2\}\leq \frac{E(T_n - \theta)^2}{\epsilon^2}$$
+\end{proposition}
+We have convergence in probability of the empirical distribution function to
+the true distribution function, $F^*_n(x) \overset{p}{\to} F(x) $, using the Weak Law of Large Numbers (WLLN). But, we note that it can also be directly computed
+it using Chebychev's inequality: 
+\begin{equation*}
+  \begin{split}
+    P\{|F^*_n(x) - F(x) |> \varepsilon \}&\leq \frac{\var (F^*_n(x))}{\varepsilon^2} = \frac{F(x)(1-F(x))}{n\varepsilon^2} \to 0 \text{ as }n\to \infty
+  \end{split}
+\end{equation*}
+\begin{theorem}[Glivenko-Cantelli]
+  $F^*_n(x)$ converges uniformly to $F(x)$, that is, for any $\varepsilon >0, $
+  $$ \lim_{n \to \infty} P \left( \sup_{-\infty <x< \infty} |F^*_n(x) - F(x)| > \varepsilon \right) = 0 $$  
+   
+\end{theorem}
+\begin{theorem}[Transforming Density Functions]  
+  Let $X$ be a RV with PDF $f(x)$, and $y$ a transformation function, then $y(X)$ is a derived random variable. Denote the inverse of the transformation $y(x)$ by $x(y)$. Then, the PDF of $y(X)$ is  
+  $$g(y) = f(x(y)) \left| \frac{dx}{dy}  \right|  $$
+  \begin{proof} 
+    
+Suppose $X$ is a random variable whose probability density function is $f(x)$.
+By definition, 
+    $$P(a \leq X < b ) = \int_a^b f(x) \; dx $$
+Any function of a random variable is itself a random variable and, if $y$ is taken as some
+    transformation function, $y(X)$ will be a derived random variable. Let $Y = y(X)$, and notice that if $X = a, $ then $Y = y(a)$, hence 
+    $$P(y(a) \leq Y < y(b)) = P(a \leq X < b  ) = \int_a^b f(x) \; dx = \int_{f(a)}^{f(b)} f(x(y)) \;\frac{dx}{dy} \; dy. $$
+    Notice that the right-hand integrand $f(x(y)) \;\frac{dx}{dy}$ is expressed wholly in terms of $y$, denoting it by $g(y),$ we get 
+    $$P(y(a) \leq Y < y(b)) =  \int_{f(a)}^{f(b)} g(y) \; dy.$$
+    This demonstrates that $g(y)$ is the probability density function associated with $Y$. Now, if $\frac{d {x}}{d {y}} {}$ were to change sign, there would be values of $x$ for which $y(x)$ would be multivalued, i.e. it couldn't be a PDF. Noting this, we conclude that the derived PDF should be written as 
+    $$g(y) = f(x(y)) \left| \frac{d {x}}{d {y}} {} \right| .$$
+
+  \end{proof}
+
+\end{theorem}
+\section{Theory of point estimation}
+\subsection{Consistency and Bias}%
+  \label{sub:Consistency and Bias}
+  
+\hspace{24pt}Let $X$ be an \textit{random variable} defined on a probability space $(\omega, S, P)$. Suppose that the \textit{distribution function} $F$ of $X$ depends on a certain number of parameters, and suppose further that the functional form of $F$ is known except perhaps for a finite number of these parameters. Let $\theta = (\theta_1, \theta_2 , . . . , \theta_k)$ be the unknown parameter associated with $F$.
+\begin{definition}[Parameter]
+  A \textbf{parameter} is any quantity of a statistical population that summarizes or describes an aspect of the population, such as a mean or a standard deviation. If a population exactly follows a known and defined distribution, for example the normal distribution, then a small set of parameters can be measured which completely describes the population. 
+
+  A \textbf{parameter} is to a \textit{population} as a \textbf{statistic} is to a \textit{sample}; that is to say, a parameter describes the true value calculated from the full population (such as the population mean), whereas a statistic is an estimated measurement of the parameter based on a sample (such as the sample mean).
+\end{definition}
+\begin{definition}[Parameter Space]
+  The set of all admissible values of the parameters of a distribution function $F$ is
+  called the \textbf{parameter space}, and is denoted by $\Theta $.
+\end{definition}
+\begin{definition}[Parametric Family]
+  A \textbf{parametric family} is a family of objects whose differences depend only on the chosen values for a set of \textit{parameters}.
+\end{definition}
+\begin{example}[]
+  For example, the probability density function $F_X$ of a random variable $X$ may depend on a parameter $\theta$. In that case, the function may be denoted 
+  ${f_{X}(\cdot \,;\theta )}$ to indicate the dependence on the \textbf{parameter} $\theta$. $\theta$ is not a formal argument of the function as it is considered to be fixed. However, each different value of the parameter gives a different probability density function. Then the \textbf{parametric family} of densities is the set of functions ${\{f_{X}(\cdot \,;\theta )\mid \theta \in \Theta \}}$, where $\Theta$ denotes the \textbf{parameter space}. As an example, the normal distribution is a family of similarly-shaped distributions parametrized by their mean and their variance.
+\end{example}
+
+\hspace{24pt}Let $X := X_1, ...,X_n$ be a r.v. with DF $F_\theta$, where $\theta = (\theta_1, \theta_2 , . . . , \theta_k)$ is a vector of unknown parameters, $\theta \in \Theta$. Let $\varphi: \Theta \to \mathbb{R}$,  in this section, we explore the problem of approximating $\varphi(\theta)$ on the basis of the observed value $x$ of $X.$ 
+\begin{definition}[Point Estimator]
+  Let $(X_1,...,X_n)$ be a \textit{random sample} of size $n$ from the \textit{random variable} $F_\theta $. A statistic $\delta(X)$ is said to be a \textbf{point estimator} of $\varphi$ if $\delta: \mathcal{X}\to \Theta,$ where $\mathcal{X}$ is the set of possible values of $X.$ 
+\end{definition}
+\hspace{24pt}The problem of point estimation is to find an estimator $\delta$ for the unknown parametric function $\varphi(\theta)$ that has some nice properties. We define the following properties.
+
+\begin{definition}[Unbiasedness]
+  A \textit{point estimate} $\delta(X)$ of a \textit{parameter} $\theta$ is called unbiased if $E_\theta[\delta] = \theta$, where 
+  $$E_\theta [\delta] = \int t \; dF_{\delta, \theta}(t) $$
+\end{definition}
+
+\begin{definition}[Bias]
+Let $\theta$ be a RV, and $\hat \theta$ an estimator of $\theta$. Then the \textbf{bias} of $\hat \theta$ relative to $\theta$ is defined as 
+  $$\text{Bias}_\theta (\hat \theta) = E[\hat \theta] -\theta  $$
+  An estimator is said to be \textbf{unbiased} if its bias is equal to zero for all values of parameter $\theta$, or equivalently, if the expected value of the estimator matches that of the parameter.
+\end{definition}
+
+\begin{definition}[Consistency]
+  Let $X_1, X_2,..., X_n$ be a sequence of \textit{iid} r.v. with common DF $F_\theta $, $\theta \in \Theta$ a sequence of point estimators $T(X_1,...,X_n) = T_n$ is called
+\begin{enumerate}
+  \item[\it (i)]\textbf{weakly consistent} for $\theta$ if $T_n \overset{p}{\to} \theta $
+  \item[\it (ii)]\textbf{strongly consistent} for $\theta$ if $T_n \overset{a.s.}{\to} \theta $ 
+\end{enumerate}
+  
+\end{definition}
+\begin{theorem}[Markov's Inequality]\label{ineq:Markov}
+  If $X$ is a nonnegative random variable and $a > 0$, then the probability that $X$ is at least $a$ is at most the expectation of $X$ divided by $a$:
+  $$P(X > a) \leq \frac{\mathbb{E}[X]}{a} $$
+\end{theorem}
+\begin{proposition}[Chernoff's Inequality] \label{ineq:Chernoff}
+  Suppose $X_1,...,X_n$ are \textit{iid} RV, let $X = \sum^{n}_{i=1} X_i$. We can apply Markov’s inequality to get the following inequality 
+  $$P(X \geq a) \leq \frac{\prod^{n}_{i=1} \mathbb{E}[e^{tX_i}]}{e^{ta}} $$
+  \begin{proof} Apply the transformation $x \mapsto e^{tx}$
+    \marginnote{Recall that if $X,Y$ are independent, then $E[XY] = E[X]E[Y]$, and in particular, for any measurable functions $g,f$, $E[f(X)g(Y)] = E[f(X)]E[g(Y)]$.}
+  \begin{equation*}
+    \begin{split}
+      P(X \geq a) \leq P(e^{tX} \geq e^{ta})\overset{(\ref{ineq:Markov})}{\leq} \frac{\mathbb{E}[e^{tX}]}{e^{ta}} &= \frac{\mathbb{E}[e^{t(X_1 + X_2 + ... + X_n)}]}{e^{ta}}  \\ 
+      &= \frac{\mathbb{E}[\prod^{n}_{i=1} e^{t(X_i)}]}{e^{ta}} \\ 
+      &= \frac{\prod^{n}_{i=1} \mathbb{E}[e^{t(X_i)}]}{e^{ta}} 
+    \end{split}
+  \end{equation*}
+ \end{proof} 
+\end{proposition}
+\begin{definition}[Martingales]
+  
+\end{definition}
+\begin{theorem}[Kolmogorov’s Strong Law of Large Numbers] \label{label}
+  Let $X_1,X_2, . . .$ be \textit{iid} RV with common law $\mathcal{L}(X)$(common
+cumulative distribution function $F$). Then
+  $$\frac{S_n}{n} = \frac{\sum^{n}_{i=1} X_i}{n} \overset{a.s.}{\to} \mu = E[X] \text{ as }n\to \infty \iff E[X] < \infty $$
+\end{theorem}
+\begin{theorem} \label{label}
+  If $T_n$ is a sequence of estimators for $\theta$ such that $E [T_n]\to \theta$ and $\var (T_n) \to 0$ as $n \to \infty$, then $T_n$ is a \textit{consistent} estimator of $\theta.$  
+\end{theorem}
+\subsection{Invariance}%
+  \label{sub:Invariance}
+  \begin{definition}[Invariance Under Group]
+    Let $\mathcal{G}$ be a group of Borel-measurable functions, with the group operation being composition of functions. A family of probability distributions is said to be \textbf{invariant under a group} $\mathcal{G}$ if $ \forall g \in \mathcal{G}$, $\forall \theta \in \Theta,$ we can find a unique $\theta^* \in \Theta$ such that the distribution of $g(X)$ is given by $P_{\theta^*}$ whenever $X$ has the distribution $P_\theta.$ 
+  \end{definition}
+ \subsection{Sufficient Statistics}%
+  \label{sub:Name}
+  \begin{definition}[Family of Distributions]
+    This terminology of "families" tends to be used when studying classes $\mathcal C_Y$ of functions into a set $Y$ or "maps." Given a domain $X$, a family $\mathcal F$ of maps on $X$ parameterized by some set $\Theta$ (the "parameters") is a function\cite{def_of_family}
+
+$$\mathcal F : X\times \Theta\to Y$$
+for which 
+\begin{enumerate}
+  \item[\it (i)] for each $\theta\in\Theta$, the function $\mathcal{F}_\theta:X\to Y$ given by $\mathcal{F}_\theta(x)=\mathcal{F}(x,\theta)$ is in $\mathcal{C}_Y$ and 
+  \item[\it (ii)] $\mathcal F$ itself has certain "nice" properties.
+\end{enumerate}
+The idea is that we want to vary functions from $X$ to $Y$ in a "smooth" or controlled manner.  Property (i) means that each $\theta$ designates such a function, while the details of property (ii) will capture the sense in which a "small" change in $\theta$ induces a sufficiently "small" change in $\mathcal{F}_\theta$.
+
+For statistical applications, $\mathcal{C}_Y$ is the set of all distributions on $\mathbb{R}$ (or, in practice, on $\mathbb{R}^n$ for some $n$, but to keep the exposition simple I will focus on $n=1$). We may identify it with the set of all non-decreasing càdlàg functions $\mathbb{R}\to [0,1]$ where the closure of their range includes both $0$ and $1$: these are the cumulative distribution functions, or simply distribution functions.  Thus, $X=\mathbb R$ and $Y=[0,1]$.
+
+A family of distributions is any subset of $\mathcal{C}_Y$. Another name for a family is statistical model.  It consists of all distributions that we suppose govern our observations, but we do not otherwise know which distribution is the actual one.
+\begin{enumerate}
+  \item[\it (i)]A family can be empty.
+
+  \item[\it (ii)] $\mathcal{C}_Y$ itself is a family.
+
+  \item[\it (iii)] A family may consist of a single distribution or just a finite number of them.
+
+\end{enumerate}
+  \end{definition}
+  \begin{definition}[Sufficient]
+    Let $X =( X_1, ..., X_n)$ be a sample from $\{F_\theta : \theta \in \Theta\}$. A statistic $T = T(X)$ is sufficient for $\theta $ or for the family of distributions $\{F_\theta : \theta \in \Theta\}$ if and only if the conditional distribution of $X$, given $T = t,$ does not depend on $\theta$, except perhaps on a null set. 
+
+In particular, a statistic is sufficient for a family of probability distributions if the sample from which it is calculated gives no additional information than the statistic, as to which of those probability distributions is the sampling distribution.
+  \end{definition}
+The above definition is not constructive since it requires that we first guess a
+statistic $T$ and then check to see whether $T$ is sufficient. Moreover, the procedure for checking that $T$ is sufficient is quite time consuming. We now give a criterion for
+determining sufficient statistics.
+
+\begin{theorem}[Factorization Criterion] \label{Factorization_criterion}
+  Let $X = (X_1, ..., X_n)$ be discrete RVs with PMF $p_\theta (x_1,...,x_n), \; \theta \in \Theta$. Then $T(X_1, ..., X_n)$ is sufficient for $\theta$ if and only if we can write
+  $$p_\theta (x_1,...,x_n)= h (x_1,...,x_n) g_\theta (T(x_1,..., x_n)),  $$
+  where $h$ is a nonnegative function of $x_1,... , x_n$ only and does not depend on $\theta$,
+and $g_\theta$ is a nonnegative nonconstant function of $\theta$ and $T(x_1,... ,x_n)$ only. The
+statistic $T(X_1,...,X_n)$ and parameter $\theta$ may be multidimensional.
+\end{theorem}
+\begin{remark} 
+  Theorem \ref{Factorization_criterion} also holds for the continuous case and, indeed, for quite
+arbitrary families of distributions.
+\end{remark}
+\subsection{Maximum Likelihood}%
+  \label{sub:Maximum Likelihood}
+  The principle of maximum likelihood essentially assumes that the sample is representative
+of the population and chooses as the estimator that value of the parameter
+which maximizes the PDF $f_\theta(x)$. 
+\begin{definition}[Likelihood function]
+  The \textbf{likelihood function} (often simply called the \textit{likelihood}) is the \textit{joint probability distribution} of observed data viewed as a function of the parameters of a statistical model.
+
+  Let $(X_1,...,X_n)$ be a random vector with PDF $f_\theta(x_1,...,x_n), \; \theta \in \Theta$. The likelihood function is defined as
+  $$L (\theta ; x_1,..., x_n) = f_ \theta (x_1,..., x_n) ,$$
+  considered as a function of $\theta$. If $\theta$ is a multiple parameter, and $X_1,...,X_n$ are \textit{iid}, with PDF $f_\theta (x),$ the likelihood function is then 
+  $$L(\theta; x_1,..., x_n) =\prod^{n}_{i=1} f_\theta (x_i) $$
+\end{definition}
+\begin{definition}[log Likelihood]
+  It is convenient to work with the logarithm of the likelihood, since $\log$ is a monotone function, 
+  $$\log L(\hat \theta ; x_1,..., x_n) = \sup_{\theta \in \Theta}\log L(\theta; x_1,..., x_n) $$
+\end{definition}
+\begin{proposition} \label{label}
+  Let $\Theta$ be an open subset of $\mathbb{R}^k$, and suppose that $f_\theta (x)$ is a positive, differentiable function of $\theta $, if a supremum $\hat \theta$ exists, it must satisfy the likelihood equations\marginnote{We say "equations" because there is one equation for each $j$.}, 
+  $$\frac{\partial \log L(\hat \theta ; x_1, ..., x_n )}{\partial \theta_j} = 0 , \quad j = 1,2,...,k, \quad \theta = (\theta_1, ..., \theta_k) $$
+  Any nontrivial root of the likelihood equations is called an MLE in the loose
+sense. A parameter value that provides the absolute maximum of the likelihood function
+is called an MLE in the strict sense or, simply, an MLE.
+\end{proposition}
+\begin{definition}[Maximum Likelihood Estimator (MLE)]
+  The principle of maximum likelihood estimation consists of choosing an estimator of $\theta$, $\hat \theta (x)$, that maximizes $L(\theta ; x_1,..., x_n)$. In other words, we want to find a mapping $\hat \theta : \mathbb{R}^n \to \mathbb{R}^k$ such that 
+  $$L (\hat \theta ; x_1,..., x_n ) = \sup_{\theta \in \Theta}\{L(\theta : x_1,..., x_n)\} $$
+  If such a $\hat \theta$ exists, we call it a \textbf{maximum likelihood estimator}, or MLE 
+\end{definition}
+\subsection{Completeness}%
+  \label{sub:Completeness}
+  The concept of sufficiency is used frequently with another concept, called completeness,
+which we now define.
+  \begin{definition}[Completeness]Let $\{f_\theta \mid \theta \in \Theta\}$ be a family of PDFs (or PMFs). We say that this family is complete if
+    $$\mathbb{E}_\theta [g(X)] = 0 \quad \forall \theta \in \Theta $$
+    implies that 
+    $$P_\theta \{ g(X) = 0 \} = 1 \quad \forall \theta \in \Theta  $$
+  \end{definition}
+  \begin{definition}[Complete Estimator]
+    A statistic $T(X)$ is said to be complete if the family of distributions of $T$ is complete.\marginnote{$X$ will usually be a multiple RV. The family of distributions of $T$
+    is obtained from the family of distributions of $X_1, X_2,... , X_n$ by the usual transformation discussed in \ref{sub:Multiple Random Variables}.}
+   
+    That is, if $X$ is a RV whose probability distribution belongs to a parametric model $P_\theta$ parametrized by $\theta$, and $T$ is a statistic, then $T$ is said to be complete for the distribution of $X$ if, for every measurable function $g$, 
+    $${ {\text{if }}\mathbb{E}_{\theta }(g(T))=0{\text{ for all }}\theta {\text{ then }}{P} _{\theta }(g(T)=0)=1{\text{ for all }}\theta .}$$\marginnote{$g(T)$ can't depend on $\theta$ }
+  \end{definition}
+  \begin{definition}[Exponential Family]
+    If there exists real-valued functions $Q_1, ..., Q_k, D$ defined on $\Theta$ and Borel-measurable functions $T_1,..., T_k,S$ on $\mathbb{R}^n$ such that 
+    \begin{equation}
+      \label{expoFam}
+      \begin{split}
+      f_\theta (x) = \exp \left( \sum^{k}_{i=1}  Q_i (\theta)T_i(x) + D(\theta) +S(x)\right) 
+      \end{split}
+    \end{equation}
+    we say that the family $\{f_\theta , \theta \in \Theta\}$ is a $k$-parameter \textbf{exponential family}. 
+  \end{definition}
+  \begin{theorem}
+    Let $\{f_\theta : \theta \in \Theta\}$ be a $k-$parameter exponential family as in (\ref{expoFam}), where $\mathbb{R}^k \supseteq \theta = (\theta_1, ..., \theta_k) \in \Theta$, $T_1,..., T_k, S$ real valued functions on $\mathbb{R}^n$, $T = (T_1,..., T_k)$, and $x = (x_1,..., x_n), \; k\leq n$. Let $Q  =(Q_1, ..., Q_k)$, and suppose that the range of $Q$ contains an open set in $\mathbb{R}^k$. Then, 
+    $$T = (T_1(X), ..., T_k(X)) $$
+    is a complete sufficient statistic. 
+  \end{theorem}
+  \subsection{UMVUE}%
+    \label{sub:UMVUE}
+  \begin{theorem}[Lehmann Sheffé] \label{label} 
+Let $\vec{X}= X_1, X_2, \dots, X_n$ be a random sample from a distribution that has p.d.f (or p.m.f in the discrete case) $f(x:\theta)$ where $\theta \in \Omega$ is a parameter in the parameter space. Suppose $Y = u(\vec{X})$ is a sufficient statistic for $\theta$, and let $\{ f_Y(y:\theta): \theta \in \Omega\}$ be a complete family. If $\varphi:\operatorname{E}[\varphi(Y)] = \theta$ then $\varphi(Y)$ is the unique MVUE of $\theta$.
+
+  \end{theorem}
+  \subsection{Lower Bound for the Variance of an Unbiased Estimate}
+  \label{sub:Lower Bound for the Variance of an Unbiased Estimate}
+  \begin{definition}[Score]
+    Formally, the partial derivative with respect to $\theta $ of the natural logarithm of the likelihood function is called the \textbf{score}. 
+    
+  \end{definition}
+  \begin{definition}[Fisher Information]
+    Let $X \sim f_\theta(x)$. The Fisher information is defined to be the variance of the score:
+    $$I(X) = \mathbb{E} \left[\left. \left(\frac{\partial }{\partial {\theta}}{\ln f_\theta(X)} \right)^2 \right|  \theta \right] =\int_{\mathbb{R}} \left(\frac{\partial }{\partial {\theta}} {\ln f_\theta(x)}\right)^2 f_\theta(x) \; dx   $$
+    
+  \end{definition}
+
+  \subsection{Review of Estimator Properties}
+    \label{sub:Review of Estimator Properties}
+    \begin{enumerate}
+  \item[\bf Unbiased.] An estimator is unbiased if, on average, it produces parameter estimates that are equal to the true values of the parameters being estimated. Mathematically, this can be expressed as \(E(\hat{\theta}) = \theta\), where \(E(\hat{\theta})\) is the expected value of the estimator and \(\theta\) is the true parameter value.
+
+  \item[\bf Consistent.] Consistency refers to the property that as the sample size increases, the estimator converges in probability to the true parameter value. In other words, for any small positive number \(\epsilon\), \(\lim_{{n \to \infty}} P(|\hat{\theta} - \theta| > \epsilon) = 0\), where \(n\) is the sample size. 
+
+    \textsc{Proving Consistency.} The easiest way to show convergence in probability/consistency is to invoke Chebyshev's Inequality, which states:
+
+      $P((T_n - \theta)^2\geq \epsilon^2)\leq \frac{E[(T_n - \theta)^2]}{\epsilon^2}$.
+
+Thus, 
+
+      $P(|T_n - \theta|\geq \epsilon)=P((T_n - \theta)^2\geq \epsilon^2)\leq \frac{E[(T_n - \theta)^2]}{\epsilon^2}$.
+
+      And so you need to show that $E[(T_n - \theta)^2]$ goes to 0 as $n\rightarrow\infty$.
+\begin{remark} 
+  The above requires that the estimator is at least \textbf{asymptotically unbiased}.
+\end{remark}
+  
+
+  \item[\bf Sufficient.] A statistic is considered sufficient if it contains all the information about the parameter that is available in the sample. In other words, no other statistic calculated from the same sample provides additional information about the parameter. This property is crucial in reducing data dimensionality while retaining essential information for parameter estimation.
+
+      \textsc{Proving Sufficiency.} Showing sufficiency is straightforward with the use of the \textit{Factorization Criterion} (\ref{Factorization_criterion}).
+
+  \item[\bf Complete.] Completeness is a property related to the ability of a statistic to detect all possible variations in the underlying distribution. A statistic is considered complete if, for any function \(g\) such that \(E[g(T)] = 0\) for all values of the parameter, the only solution is that the probability of \(g(T) = 0\) is 1. Here, \(T\) is the statistic in question.
+\end{enumerate}\newpage  
+    
+\bibliographystyle{plainnat}
+\bibliography{Notes_MATH357}
+
+\end{document} 
+

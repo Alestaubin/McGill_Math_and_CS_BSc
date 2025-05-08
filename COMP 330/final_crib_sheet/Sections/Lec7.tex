@@ -1,0 +1,13 @@
+\subsection{\color{ForestGreen}Context Free Grammars}
+\subsubsection{Definitions}
+\begin{itemize}
+    \item A \textbf{Context Free Grammar} is a notation for describing languages that is more powerful than finite automata.
+    \item Terminals = symbols of the alphabet of the language being defined.
+    \item Variables = nonterminals = a finite set of other symbols, each of which represents a language.
+    \item Start symbol = the variable whose language is the one being defined.
+    \item A production has the form variable $\rightarrow{}$ string of variables and terminals.
+    \item $=>^* $ means "zero or more derivation steps."
+    \item $\alpha$ is a \textbf{sentential form} $\iff S =>^* \alpha.$ 
+    \item A language that is defined by some CFG is called a \textbf{context-free language}. Intuition: CFL's can count 2 things, not 3.
+    \item Leftmost and Rightmost derivations: A leftmost derivation is one in which you always expand the leftmost non-terminal, denoted as $=>_{lm}^*$.
+\end{itemize}

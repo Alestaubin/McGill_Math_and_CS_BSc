@@ -1,0 +1,12 @@
+\subsection{\color{ForestGreen}Push Down Automata}
+\subsubsection{Definitions}
+\begin{itemize}
+\item A \textbf{PDA} is a 7-tuple \( (Q, \Sigma, \Gamma, \delta , q_0, Q, Z_0, F ) \), where \( \Gamma \) is the stack alphabet, \( Z_0 \in \Gamma \) is the start symbol of the stack. 
+\item \( \delta (q, a, Z) \) containing \( (p, \alpha) \) means: one thing the PDA can do in state \( q \) with \( a \) at the front of input and \( Z \) on top of the stack is: change the state to \( p \), remove \( a \) from the front of the input (\( a = \varepsilon  \) is possible), and replace \( Z \) on the top of the stack by \( \alpha \).
+
+\item ID of PDA: A triple \( (q, w, \alpha) \) where \( q \) is the current state, \( w \) is the remaining input, \( \alpha \) is the stack contents with the top at the left. \( (q, aw, X\alpha) \vdash (p, w, \beta \alpha) \) for any \( w \) and \( \alpha \) if \( \delta (q, a ,X) \) contains \( (p , \beta) \). We have \( I \vdash^{*} I  \) and if \( I \vdash^{\ast} J \) and \( J \vdash K \) then \( I \vdash^{*} K  \).
+
+\item If \( P \) is a PDA, then \( L(P)  \) is the set of strings \( w \) such that \( (q_0, w, Z_0) \vdash^{*} (f, \varepsilon , \alpha)  \) for a final state \( f \) and any \( \alpha \). We may also define the language by an empty stack: \( N(P) \) is the set of strings \( w \) such that \( (q_0, w , Z_0) \vdash^{*} (q, \varepsilon , \varepsilon ) \) for any state \( q \). \( L(P) = N(P)  \) always.
+\item A deterministic PDA is a PDA where the is at most one chose of moves for any state \( q \), input \( a \), and stack symbol \( X \). There must not be a choice between using a real input or \( \varepsilon  \). Formally: \( \delta (q, a , X) \) and \( \delta (q, \varepsilon , X) \) can not both be non-empty.
+\item In a PDA diagram, the nodes are the states of the PDA, the arcs correspond to transitions: an arc with \( a , X / \alpha \) from \( q \) to \( p \) means \( \delta (q, a , X) \) contains the pair \( (p, \alpha) \). (what input to use, the old top of stack, and the new top of stack); \( a, X / \varepsilon  \) means pop.
+\end{itemize}

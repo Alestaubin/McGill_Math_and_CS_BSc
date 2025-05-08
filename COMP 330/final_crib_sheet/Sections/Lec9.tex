@@ -1,0 +1,38 @@
+\subsection{\color{ForestGreen}Chomsky Normal Form}
+\subsubsection{Definitions}
+\begin{itemize}
+    \item {Chomsky Normal Form}: A grammar where
+every production is either of the form $A \rightarrow BC$
+or $A \rightarrow c$ (where $A, B, C$ are arbitrary variables
+and $c$ an arbitrary symbol). In CFN, every derivation of a string of $n$ letters has
+exactly $2n-1$ steps. Thus, can determine if a string is in the language by exhaustive search.
+\end{itemize}
+Theorem: If $L$ is a CFL, then $L \setminus \{\epsilon\}$ has a CFG in CNF.
+\subsubsection{Conversion to CNF}
+\begin{enumerate}
+    \item Get rid of all $\epsilon$ productions.
+\begin{itemize}
+    \item For each production, omit every subset of nullable variables.
+    \item For example, if $P \rightarrow Ax B$ with both $A$ and $B$ nullable, add productions $P \rightarrow xB |Ax |x.$
+\item After this, delete all productions with empty RHS.
+\end{itemize}
+\item Get rid of all unit productions.
+\begin{itemize}
+    \item A unit production is one where RHS has only one symbol.
+    \item Consider production $A \rightarrow B$. Then for every production $B\rightarrow \alpha$, add the production $A \rightarrow \alpha$. Repeat until done (but don’t re-create a unit production already deleted).
+\end{itemize}
+\item Eliminate all useless symbols, i.e. that derive no terminal string, or are unreachable from the start symbol.
+\begin{itemize}
+    \item Remove all productions that involve these symbols.
+\end{itemize}
+\item Replace every production that is too long by shorter productions.
+\begin{itemize}
+    \item For example, if have production $A\rightarrow BCD$, then replace it with $A\rightarrow BE$ and $E \rightarrow CD$.
+\end{itemize}
+\item Move all terminals to productions where RHS is one terminal.
+\begin{itemize}
+    \item For every terminal on the right of a non-unit production, add a substitute variable.
+\item For example, replace production $A \rightarrow bC$ with
+productions $A\rightarrow BC$ and $B \rightarrow b$.
+\end{itemize}
+\end{enumerate}

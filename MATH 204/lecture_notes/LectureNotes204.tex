@@ -1,0 +1,554 @@
+\documentclass[12pt]{article}
+\usepackage[paper=letterpaper,margin=2cm]{geometry}
+\usepackage{amsmath}
+\usepackage{amsthm} %needed for the proofs 
+\usepackage{amssymb}
+\usepackage{amsfonts}
+\usepackage{newtxtext, newtxmath}
+\usepackage{enumitem}
+\usepackage{titling}
+\usepackage{titlesec}
+\usepackage[english]{babel}
+\usepackage{thmtools}
+\usepackage{blindtext}
+\usepackage{hyperref}
+
+
+
+\newtheorem{theorem}{Theorem}[section]
+\theoremstyle{definition}
+\newtheorem{definition}{Definition}[section]
+\theoremstyle{remark}
+\newtheorem*{remark}{Remark}
+\newtheorem{corollary}{Corollary}[theorem]
+\newtheorem{lemma}[theorem]{Lemma}
+\declaretheoremstyle{example}
+\declaretheorem[numberwithin=section, style=example, name=Example]{example}
+\declaretheoremstyle{proposition}
+\declaretheorem[numberwithin=section, style=proposition, name=Proposition]{proposition}
+\declaretheorem[numberwithin=section, name=Note]{note}
+\declaretheoremstyle{note}
+
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    filecolor=magenta,      
+    urlcolor=cyan,
+    pdftitle={Overleaf Example},
+    pdfpagemode=FullScreen,
+    }
+
+\urlstyle{same}
+
+\begin{document}
+\begin{titlepage}
+	\centering
+	{\scshape McGill University \par}
+	\vspace{1cm}
+	{\scshape\Large MATH 204\par}
+	\vspace{1.5cm}
+	{\huge\bfseries Class Notes\par}
+	\vspace{2cm}
+	{\Large\itshape Alexandre St-Aubin\par}
+	\vfill
+	Taught by \par
+	Jose \textsc{Andres Correa}
+
+	\vfill
+
+% Bottom of the page
+	{\large \today\par}
+\end{titlepage}
+
+\tableofcontents
+\newpage
+\section{Simple linear regression (lectures 1-2)}
+
+\begin{definition}(Simple linear regression)
+    Let $Y_i$ be the response variable which depends on $X_i$ (\textbf{Explanatory variable}), for $i \in \{1,2,...,n\}$.
+    \begin{equation}
+        Y_i = \beta_0 + \beta_1 x_i + \epsilon_i
+    \end{equation}
+    where $\beta_0$ is the y-intercept, $\beta_1$ is the slope, and $\epsilon_i$ is the model (random) error.
+\end{definition} 
+\begin{note}
+    $\beta_0$ and $\beta_1$ are population parameters, their values need to be estimated. 
+    We will denote the estimates $\hat{\beta_0}$ and $\hat{\beta_1}$.
+    The values of the regression line are called predicted values;
+    \begin{equation}
+        \hat{y_i}=\hat{\beta_0}+\hat{\beta_1}x_i
+    \end{equation}
+\end{note}
+\begin{definition}(Least squares criterion)
+    This criterion minimizes the distance between each $\hat{y_i}$ and $y_i$.
+    \begin{equation}
+        \displaystyle\sum_{i=1}^{n}(\hat{y_i}-y_i)^2=\displaystyle\sum_{i=1}^{n}(\hat{\beta_0}+\hat{\beta_1}x_i-y_i)^2
+    \end{equation}
+    where 
+    \begin{equation}
+        \hat{\beta}_1=\frac{\displaystyle\sum_{i=1}^{n}(y_i-\bar{y})(x_i-\bar{x})}{\displaystyle\sum_{i=1}^{n}(x_i-\bar{x})^2}=\frac{S_{xy}}{S_{xx}}
+    \end{equation}
+    \begin{equation}
+        \hat{\beta}_0=\bar{y}-\hat{\beta}_1\bar{x}
+    \end{equation}
+    Where $\bar{y}$ and $\bar{x}$ represent the mean of the observed data.
+    These values of $\hat{\beta}_0$ and $\hat{\beta}_1$ give the minimum value of the squared differences between the observed and fitted values.
+    $S_{XY}$ corresponds to the sample covariance, $S_{XX}$ the standard deviation of $x_i$, and 
+    $S_{YY}$ the standard deviation of $y_i$.
+\end{definition}
+\begin{note}
+    The error terms $\epsilon_1, . . . , \epsilon_n$ in equation (1) are assumed to be mutually independent random variables with mean 0 and variance $\sigma^2$.
+\end{note}
+\begin{note}
+    $Y_1, . . . , Y_n$ are random variables, mutually independent, and for each $i \in \{1,...,n\}$, 
+    \begin{equation}
+        E(Y_i|X_i=x_i)=\beta_0 +\beta_1x_i
+    \end{equation}
+    \begin{equation}
+        Var(Y_i|X_i=x_i)=\sigma^2
+    \end{equation}
+    So, $\beta_1$ corresponds to the change in the mean of $Y_i$ for a one unit change in $x_i$.
+    Thus if you compare two experimental units whose $x_i$ variables differ by 1, the difference 
+    in the means of those two experimental units is $\beta_1$. On the other hand, $\beta_0$ is the mean of
+    $Y_i$ when $x_i=0$.
+\end{note}
+
+\begin{definition}(Unbiased estimator)
+    We say $\hat{\beta}_1$ is an unbiased estimator of $\beta_1$ if 
+    \begin{equation}
+        E(\hat{\beta}_1)=\beta_1
+    \end{equation}
+    That is, if used over and over again on a large number of different data sets, 
+    the formula for $\hat{\beta}$ will tend to give a faithful estimate of the 
+    unknown population value $\beta$ on average.
+\end{definition}
+\begin{definition}(Standard deviation of $\beta_1$)
+    \begin{equation}
+        \sigma_{\hat{\beta}_1}=\sqrt{Var(\hat{\beta}_1)}=\frac{\sigma}{S_{XX}}
+    \end{equation}
+    From which we can derive
+    \begin{equation}
+        Var(\hat{\beta}_1)=\frac{\sigma^2}{S_{XX}}
+    \end{equation}
+    We can estimate $\sigma^2$ (variance of residuals) with
+    \begin{equation}
+        \hat{\sigma}^2=\frac{1}{n-2}\displaystyle\sum_{i=1}^{n}(y_i-\hat{y}_i)^2=\frac{SSE}{n-2}
+    \end{equation}
+    $(n - 2)$ is the error or residual degrees of freedom.
+    \begin{equation}
+        SSE=S_{YY}-\hat{\beta}_1S_{XY}
+    \end{equation}
+    \textbf{Estimating the standard deviation}
+    \begin{equation}
+        \hat{\sigma}_{\hat{\beta}_1}=\sqrt{\frac{\hat{\sigma}^2}{S_{XX}}}=\frac{\hat{\sigma}}{\sqrt{S_{XX}}}
+    \end{equation}
+\end{definition}
+\section{Confidence interval for $\beta_1$ (lecture 3)}
+    \begin{proposition}
+        Suppose the error terms $(\epsilon_1,..., \epsilon_n)$ are normally distributed,
+        \begin{equation}
+            (\epsilon_1,..., \epsilon_n)\sim \mathcal{N}(0,\sigma^2)
+        \end{equation}
+        Then, $\hat{\beta}_1$ is normally distributed,
+        \begin{equation}
+            \hat{\beta}_1 \sim \mathcal{N}(\beta_1,\sigma^2/S_{XX} )
+        \end{equation}
+    \end{proposition}
+    \begin{definition}(Random variabe $T$)
+        \begin{equation}
+            T = \frac{\hat{\beta}_1-\beta_1}{\hat{\sigma} / \sqrt{S_{XX}}} \sim t_{n-2}
+        \end{equation}
+        where $t_{n-2}$ is the Student random distribution with $n-2$ degrees of freedom.
+    \end{definition}
+    \begin{definition}(Confidence Interval)
+        To form a $100 \times (1 - \alpha) \%$ confidence interval for $\beta_1$, one can use
+        \begin{equation}
+            \hat{\beta}_1 \pm t_{n-2, \alpha/2}\times \hat{\sigma}_{\hat{\beta}_1} = \hat{\beta}_1 \pm t_{n-2, \alpha/2}\times \frac{\hat{\sigma}}{\sqrt{S_{XX}}}
+        \end{equation}
+    \end{definition}
+    \begin{example}
+        Therefore, for Type I error rate $\alpha = 0.05$ we would reject $H_0$ for values of the test-statistics larger than
+        1.96 or smaller than -1.96, i.e., $RR = {|T| > 1.96}.$    
+    \end{example}
+    \begin{note}
+        A type I error is said to result if the test rejects $H_0$ when $H_0$ is true.
+        A type II error is said to occur if the test does not reject $H_0$ when $H_0$ is false.
+    \end{note}
+\section{P-value (lecture 4)}
+    \begin{definition}(p-value)
+        The p-value tells you how likely it is that your data could have occurred under the null 
+        hypothesis. The p value tells you how often you would expect to see a test statistic 
+        as extreme or more extreme than the one calculated by your statistical test if the null 
+        hypothesis of that test was true. The p value gets smaller as the test statistic calculated
+        from your data gets further away from the range of test statistics predicted by the null hypothesis.
+        Here are some general guidelines:
+        \begin{enumerate}
+            \item $p<0.001$ ; extremely strong evidence
+            \item $0.001\le p<0.01$ ; very strong evidence
+            \item $0.01\le p<0.05$ ; strong evidence
+            \item $0.05\le p<0.10$ ; modest evidence
+            \item $p>0.10$ ; poor evidence
+        \end{enumerate}
+        \begin{example}
+            The p value is a proportion: if your p value is 0.05, that means that 5\% of the time 
+            you would see a test statistic at least as extreme as the one you found if the null 
+            hypothesis was true. \textbf{In linear regressions, the null hypothesis is that $\beta_1=0$.}
+        \end{example}
+        \begin{theorem}
+            $$T \sim t_v \implies T^2 \sim F(1,v)$$
+            where $F(\alpha,\beta)$ refers to the Fisher-Snedecor distribution.
+        \end{theorem}
+    \end{definition}
+\section{Correlation and Coefficient of Determination (lecture 5)}
+\begin{definition}(Correlation)
+    The correlation between two random variables, X and Y (or the correlation coefficient) can be calculated as
+    \begin{equation}
+        r = \frac{S_{XY}}{\sqrt{S_{XX}S_{YY}}}
+    \end{equation}
+    The correlation coefficient, r, lies between $-1$ and $+1$ and it is scaleless. The correlation 
+    coefficient $r$ is an estimator for the population $p$.
+\end{definition}
+
+\begin{definition}(Fisher's variance stabilizing z-transformation)
+    This method can be used to build a confidence interval for $p$. First, transform $r$ to 
+    $z=\frac{1}{2}ln(\frac{1+r}{1-r})$. Then, build a confidence interval:
+    \begin{equation}
+        z \pm \frac{z_{\alpha/2}}{\sqrt{n-3}}=(c_l, c_u)
+    \end{equation}
+    where $z_{\alpha/2}$ is from the standard Normal table. Now reverse the transformation and 
+    report a $100 \times (1-\alpha)\%$ confidence interval for $p$ of
+    \begin{equation}
+        \left( \frac{e^{2c_L}-1}{e^{2c_L}+1},\frac{e^{2c_U}-1}{e^{2c_U}+1} \right)
+    \end{equation}
+\end{definition}
+
+\begin{definition}(Coefficient of Determination)
+    The coefficient of determination, denoted by $R^2$, is defined by:
+    \begin{equation}
+        R^2=1-SSE/S_{YY}
+    \end{equation}
+    $R^2$ gives the proportion of variance of Y explained by X.
+\end{definition}
+\begin{note}
+    If X is not linearly associated with Y, $SSE=S_{YY} \implies R^2 =0$. If X is linearly associated 
+    with Y, $SSE<S_{YY} \implies 0<R^2<1$.
+\end{note}
+\begin{note}
+    The square of the correlation coefficient $r^2$ equals the coefficient of determination $R^2$.
+\end{note}
+\begin{example}
+    Suppose you have a $R^2$ value of x\%, then we say that x\% of the variance in y is explained by the change in x.
+\end{example}
+
+\section{Estimating y-values (lecture 6)}
+\subsection{Estimating the mean response}
+    Given a particular value $x_0$, it is possible to estimate the mean response value $\hat{y}_0$:
+    $$\hat{y}_0 = \hat{\beta}_0+ \hat{\beta}_1 x_0$$
+    where $\hat{y}_0$ is unbiased, i.e. 
+    $$E(\hat{y}_0) = \beta_0+ \beta_1 x_0$$
+    and, 
+    $$var(\hat{y}_0) = \sigma^2 \left(\frac{1}{n} + \frac{(x_0 - \bar{x})^2}{S_{XX}} \right) $$
+    which we can estimate with
+
+    $$\hat{var}(\hat{y}_0) = \hat{\sigma}^2 \left(\frac{1}{n} + \frac{(x_0 - \bar{x})^2}{S_{XX}} \right) $$
+    \begin{definition}(Confidence interval for the mean value $y_0$)
+    If the error terms are normally distributed, a $100 \times(1-\alpha)\%$ confidence interval for 
+    the mean value $y_0$ is given by 
+    $$\hat{y}_0 \pm t_{n-2, \alpha/2} \times \hat{\sigma} \sqrt{\frac{1}{n} + \frac{(x_0-\bar{x})^2}{S_{XX}}}$$
+    \end{definition}
+\subsection{Predicting a specific value $Y_0$}
+    It is possible to estimate some individual value $Y_0$ for $x_0$. 
+    \begin{definition}(Variability of $Y_0$)
+        $$\hat{var}(Y_0) = \sigma^2 \left(1+\frac{1}{n} + \frac{(x_0 - \bar{x})^2}{S_{XX}} \right) $$
+        
+    \end{definition}
+
+    \begin{definition}(Confidence interval for the individual value $Y_0$)
+        If the error terms are normally distributed, a $100 \times(1-\alpha)\%$ confidence interval for 
+        an individual value $Y_0$ is given by 
+        $$\hat{y}_0 \pm t_{n-2, \alpha/2} \times \hat{\sigma} \sqrt{1+\frac{1}{n} + \frac{(x_0-\bar{x})^2}{S_{XX}}}$$
+    \end{definition}
+    \begin{definition}(lm summary command on R)
+        \begin{enumerate}
+            \item Estimate:
+            \begin{itemize}
+                \item (intercept) $\hat{\beta}_0$
+                \item (slope) $\hat{\beta}_1$
+            \end{itemize}
+            \item Residual standard error: $\hat{\sigma}$
+            \item Multiple R-squared: $R^2$
+            \item p-value: trivial 
+            \item F-statistic: ${T^2}_{obs}$
+            \item t value: 
+            \begin{itemize}
+                \item (intercept)
+                \item (slope) $T_{obs}=\frac{\hat{\beta}_1}{\hat{\sigma}_{\hat{\beta}_1}}$
+            \end{itemize}
+        \end{enumerate}
+    \end{definition}
+
+\section{Residual Analysis (lectures 7-8)}
+\textbf{Previous assumptions:}
+\newline $\epsilon_1, ..., \epsilon_n$ are mutually independent, and for each $i \in \{1,..., n\}$, 
+$$E(\epsilon_i) = 0$$
+$$var(\epsilon_i = \sigma^2)$$
+$$\epsilon_i \sim N(0, \sigma^2)$$
+\subsection{Validating the normality assumption}
+\begin{definition}(Residual estimates)
+    Recall that the fitted values for the model are
+    $$\hat{y}_i = \hat{\beta}_0 + \hat{\beta}_1 x_i$$
+    This is the best estimate of the mean for $Y_i $. Therefore, the best guess as
+    to the unobservable value of $\epsilon_i $is
+    $$\hat{\epsilon}_i = y_i - \hat{y}_i$$
+    The quantity $\epsilon_i$ is referred to as the residual or the ith observation.
+\end{definition}
+
+\begin{definition}(Standardized residual estimates)
+    It turns out that the mean of the sample residuals is always zero, so the ith standardized residuals is equal to
+    $$\hat{\epsilon_i}^{std} = \frac{\hat{\epsilon}_i}{\hat{\sigma}}$$
+    where $\hat{\sigma}$ is the estimate of $\sigma$ from the regression.
+\end{definition}
+\begin{definition}(Empirical Rule)
+    For Normally distributed observations, about 95\% of the observations lie within 2 standard deviations from the
+    mean, and almost all observations lie within 3 standard deviations from the mean.
+\end{definition}
+
+\begin{definition}(Regression Outliers)
+    Studentized residuals have mean 0 and standard deviation 1. 
+    Therefore under the assumption that they are Normally distributed, 
+    residuals that are bigger than 3 in absolute value are possible \textbf{regression outliers}.
+    In the case of a regression outlier, if the data point is not “special” or “different,” 
+    then it should not be excluded.
+    \newline 
+    One solution: analyze the data both with and without the outlier to see if the conclusions change much...
+\end{definition}
+
+\textbf{Technique}
+\newline
+Either use a Q-Q plot, or a histogram to check wether the 
+standardized residual estimates are within the standard deviation.
+\subsection{Validating the variance and estimated value}
+\textbf{Technique:} to check these two assumptions, one can plot the residuals (standardized or not) against the fitted values.
+Then, 
+\begin{enumerate}
+    \item If the residuals are truly all mean zero, then one should not see any residuals 
+    that vary as a function of the fitted mean.
+    \item If the residuals all have the same variance, 
+    one should see equal variability across all the fitted values, as opposed 
+    to heteroscedasticity .
+\end{enumerate}
+
+\section{Polynomial regression (lecture 9)}
+\begin{definition}(\textbf{Polynomial Regression})
+    In practice, it is obvious that not all data follows a simple 
+    linear regression model. This is where the polynomial regression
+    model comes in handy. In general, polynomial regression specifies that
+    $$E(Y| X=x)= \beta_0 + \beta_1 + \hdots + \beta_px^p$$
+    where the integer p is the largest power of x in the model.
+    All intermediate powers need not be present.
+\end{definition}
+\subsection{Estimating the parameters}
+The parameters $\beta_0, \hdots, \beta_p$ can be estimated by the 
+method of least squares, i.e. by choosing $\beta_, \hdots, \beta_p$
+so that $$\sum_{i=1}^n= (y_i - \beta_0-\beta_1x_i - \hdots -\beta_px^p_i)$$
+is minimized. The estimates $\hat{\beta}_0, \hdots, \hat{\beta_p}$ can be 
+computed easily using R. Using these estimates, we can compute the predicted or fitted values
+$$\hat{y}_i = \hat{\beta}_0 + \hat{\beta}_1 x_i + \hdots + \hat{\beta}_p x^p_i$$
+And the residuals 
+$$\hat{\epsilon}_i = y_i - \hat{y}_i \; \forall i \in \{1,...,n\}$$
+\begin{note}
+    The diagnostic tools of residual analysis discussed earlier continue to apply verbatim.
+\end{note}
+\subsection{Fitting a polynomial regression model in R}
+The command lm in R can be used to fit a polynomial regression model. 
+Higher-order terms such as $x^2$ or $x^3$ are specified using the I(·) function.
+$$\rightarrow sal.quad.mod = lm(Salary\sim Experience+I(Experience \;  \hat{} \; 2))$$
+$$summary(sal.quad.mod)$$
+\begin{note}(An artifact of using the quadratic model)
+    Any parabola $\beta_0 + \beta_1x + \beta_2x^2$ 
+    will eventually decrease if $\beta_2 < 0$.We could try to improve the fit by adding more terms to the model, viz.
+    $$x^3, x^4,...$$
+\end{note}
+
+\begin{note}
+    In fitting a polynomial regression model,
+    \begin{enumerate}
+        \item It is important to be sensitive both 
+        to overfitting local features of the data and 
+        also to interpretation;
+        \item The more complex the model is, the less plausibly can we justify trying to estimate it with a relatively small amount of data;
+        \item Generally speaking, it is also preferable not to have a quadratic term in the model without a linear term.
+    \end{enumerate}
+\end{note}
+\section{Multiple Variable Regression}
+We will continue to assume that our covariates have a linear association with the response variable.
+Assume that there are K covariates of interest, $X_1 , . . . , X_K$ , and a single response variable, Y.
+The regression model assumes that for each $i \in {1, . . . , n}$, one has, conditional on covariate values $x_{i1},...,x_{iK}$,
+$$Y_i =\beta_0+\beta_1x_{i1}+\hdots +\beta_Kx_{iK} +\epsilon_i,$$
+i.e., the response variable can be written as a non-random linear function
+of the covariates plus some random error.
+
+\subsection{What is linear?}
+The model is linear in the parameters, not necessarily in the covariates, that is 
+linear regression (multiple or simple) refers to linearity in the coefficients
+of the model ($\beta_i$'s), not necessarily in the covariates ($x_i$'s). For example,
+$$ln(Y_i) = \beta_0 + \beta_1 e^{x_{i1}} + \beta_2 x^2_{i2} $$
+is a linear model. 
+
+
+\subsection{Assumptions behind the multiple linear model}
+\begin{enumerate}
+    \item $E(\epsilon_1) =\hdots = E(\epsilon_n) = 0$
+    \item $var(\epsilon_1) = \hdots = var(\epsilon_n) = \sigma^2$
+    \item $(\epsilon_1, \hdots, \epsilon_n)$ are mutually independent. 
+
+\end{enumerate}
+\subsection{Interpretation}
+Interpreting the coefficients of a multiple regression model is more complicated than in a simple linear regression model.
+$\beta_j$ is the change in the mean of $Y_i$ observed for a single unit increase in $x_{ij}$, holding all other variables $x_{i1},...,x_{iK}$ constant.
+
+$\beta_j$ in a regression model is not just the association of $X_j$ with Y , but is actually the association of $X_j$ with Y while adjusting for the associations of all the other covariates with Y .
+
+\subsection{Inference}
+As in simple linear regression, $\hat{\beta}$ is unbiased for $\beta$, i.e. $$E(\hat{\beta}) = \beta$$
+So, for all j, $$E(\hat{\beta}_j) = \beta_j$$
+
+
+The variance of any $\hat{\beta}_j,\; \hat{\sigma}^2_{\hat{\beta}_j}$ is difficult to compute, as the formula depends on the variance of the
+model errors $\sigma^2$. 
+To get an unbiased estimate of $\sigma^2$:
+$$\hat{\sigma}^2 = \frac{1}{n-K+1} \sum^n_{i=1}(y_i - \hat{y_i})^2 = \frac{SSE}{n-K+1} $$
+Where $K + 1$ is the number of coefficients that are estimated in
+the model, $\beta_0, \hdots, \beta_K$.
+
+
+\subsection{Hypothesis tests}
+
+\subsubsection{Testing an individual coefficient (lecture 11)}
+    The hypotheses we are interested in are 
+    $$\mathcal{H}_0 :\beta_j = 0, \; \mathcal{H}_a : \beta_j \neq 0$$
+    \begin{remark}
+        Failing to reject $H_0$ does not mean that $X_j$ is not associated with Y. It means that it is not associated with Y after adjusting for the associations of all other variables with Y.
+    \end{remark}
+ \href{https://ecampusontario.pressbooks.pub/introstats/chapter/13-6-testing-the-regression-coefficients/}{Testing the regression coefficients}
+    
+    To form a $100\times (1-\alpha)\%$ confidence interval for $\beta_j$ after adjusting for all other covariates, we do 
+    $$\hat{\beta}_j \pm t_{n-(K+1), \;\alpha/2} \times \hat{\sigma}_{\hat{\beta}_j}$$
+    \begin{remark}
+        If 0 is in the interval it does not mean that $X_j$ is not associated with Y . It means that it is not associated with Y after adjusting for the associations of all other variables with Y .
+    \end{remark}
+
+\subsubsection{Coefficient of Determination}
+    \begin{definition}(Multiple coefficient of determination) $R^2$ is the percentage of variation in
+        Y which is explained by the regression model.
+        $$R^2 = 1- \frac{SSE}{S_{YY}}$$
+        $R^2$ is a summary of how strongly the response variable is linearly associated to the linear combination of the covariates.
+    \end{definition}
+    \begin{remark}
+        Because the coefficient of determination, $R^2$, always increases when a new independent variable is added to the model,
+        it is tempting to include many variables in the model in order to force $R^2$ to be near 1. However, doing so reduces 
+        the number of degrees of freedom available for estimating $\sigma^2$, which adversely affects our ability to make reliable 
+        inferences.
+    \end{remark}
+    \begin{definition}(Adjusted coefficient of determination $R^2_a$)
+        Cannot be "forced” to be 1 if we include many many X's in the model.
+        $$R^2_a = 1- \frac{n-1}{n-(K+1)} \left( \frac{SSE}{S_{YY}} \right)= \frac{n-1}{n-K-1} R^2 - \frac{K}{n-K-1}$$
+    \end{definition}
+\subsubsection{Testing the overall/global fit of the model (lecture 12)}
+    An overall hypothesis test for the regression model.
+    We can write the null hypothesis as $$\mathcal{H}_0 \;:\; \beta_1 =\hdots=\beta_k =0$$
+    The alternative hypothesis is that at least one $\beta_j$ for the covariates is not
+    equal to zero.
+    $$\mathcal{H}_a : \text{At least one } \beta_j \text{is not equal to }0$$
+    The method is to use the F-statistic. 
+    \begin{definition}
+        The F-statistic, under $\mathcal{H}_0$ will have an F distribution with K and $n-(K + 1)$ degrees of freedom.
+            $$F_{obs} = \frac{R^2/K}{(1-R^2)/(n-K-1)} = \frac{MSR}{MSE}$$
+    \end{definition}
+    We reject $\mathcal{H}_0$ for large values of F, that is when 
+    $$F_{obs}>\mathcal{F}_{\alpha, K, n-K-1}$$
+    \begin{remark}
+        Rejecting $\mathcal{H}_0$ does not say which of coefficients are unlikely to be equal to zero, only that there is significant evidence against the hypothesis that they all are zero.
+        It is possible to reject $\mathcal{H}_0 \; : \;\beta_1 =\hdots = \beta_k= 0$ without rejecting a single null hypothesis of the form $\mathcal{H}_0 \; :\; \beta_j = 0$.
+    \end{remark}
+\subsection{Prediction}
+    Suppose you have a set of values for the covariates $x_0 =(x_1,...,x_k)$, then the value of Y predicted by the model is
+    $$\hat{y}_0 = \hat{\beta}_0 + \hat{\beta}_1x_1 +\hdots + \hat{\beta}_kx_k $$
+    The formula could be used to estimate 
+    \begin{itemize}
+        \item The mean of observations at a given set of covariate values
+        \item A new individual observation at a given set of covariate values.
+    \end{itemize}
+The formulas for the standard errors for these kinds of predicted and fitted values are complicated and we omit them.
+
+However, R can calculate these intervals easily using the command predict(...) function, so we can still talk about such predictions.
+\section{Testing for interaction}
+In multiple regression, two variables $X_1$ and $X_2$ are said to interact when the relationship between $X_1$ and the response variable $Y$ depends on the values of the second variable $X_2$, and vice versa.
+
+If $X_1$ and $X_2$ are the covariates between which an interaction is suspected, we incorporate the interaction between $X_1$ and $X_2$ by setting, for each $i \in {1,...,n}$,
+$$Y_i =\beta_0 +\beta_1x_{i1} +\beta_2x_{i2} +\beta_3x_{i1}x_{i2} +\varepsilon_i$$
+Then, the model can be written in two ways:
+$$Y_i =\beta_0 +(\beta_1 +\beta_3x_{i2}) x_{i1}+\beta_2x_{i2} +\varepsilon_i$$
+or 
+$$Y_i =\beta_0 +\beta_1 x_{i1}+(\beta_2 + \beta_3 x_{i1})x_{i2} +\varepsilon_i$$
+We refer to $\beta_3$ as the coefficient for the interaction between $X_1$ and $X_2$.
+
+\subsection{Procedure}
+\begin{enumerate}
+    \item Fit the model including the two covariates and the interaction.
+    \item Conduct a global F-test to assess whether any of the regression coefficients are different from zero, i.e., test the hypothesis
+    $$\mathcal{H}_0 \;:\; \beta_1 = \beta_2 =\beta_3 =0$$
+    \item If this hypothesis is rejected, then test for an interaction by using a Student t-test to test the interaction null hypothesis $\mathcal{H}_0 \;:\;\beta_3 =0$.
+    \item If the interaction null hypothesis is rejected, i.e. $\beta_3 \neq 0$, stop. 
+    Then, with this model, we can no longer interpret $\beta_1$ as the change in the mean of Y for a one-unit change in $X_1$, because that change now depends on $\beta_3$ and the value of $X_2$.
+    We can only interpret the association of $X_1$ with the response Y depending on the value of $X_2$.
+    Similarly, we can only interpret the association of $X_2$ with the response Y depending on the value of $X_1$.
+    \item Otherwise, re-fit the model without the interaction term to obtain estimates of $\beta_1$ and $\beta_2$ and interpret them in the usual way.
+\end{enumerate}
+\subsection{Interpretation}
+We can write the association of $X_2$ with the response variable, conditional on $X_1 = x$ as $\hat{\beta}_2 + \hat{\beta}_3x$.
+So a one-unit increase in $X_2$ for a value of $X_1 = x$ will correspond to an estimated $\hat{\beta}_2 + \hat{\beta}_3x$ increase in the mean price.
+
+\href{https://www.jmp.com/en_ca/statistics-knowledge-portal/what-is-multiple-regression/mlr-with-interactions.html}{Multiple Linear Regression with Interactions} and 
+\href{http://www.sthda.com/english/articles/40-regression-analysis/164-interaction-effect-in-multiple-regression-essentials/}{how to implement it in R}
+
+\section{Qualitative variables in regression models}
+Qualitative variables like “Y/N” do not take numerical values.
+To use regression with qualitative variables, they must be assigned a numerical value.
+One way to do this is the following:
+\begin{itemize}
+    \item set $Z = 1$ if severe covid
+    \item set $Z = 0$ otherwise.
+\end{itemize}
+The variable Z can then be used as a covariate in the regression model. 
+The group coded as $Z = 0$ is called the \textbf{reference group} for the analysis.
+An appropriate model would be 
+$$Y_i = \beta_0 + \beta_1 z_i +\varepsilon_i$$
+where the qualitative variable with 
+\begin{itemize}
+    \item $Z=1$ has a mean level of $\beta_0 + \beta_1$ and
+    \item $Z=0$ has a mean level of $\beta_0$.
+\end{itemize}
+In other words, $\beta_1$ measures the difference of means between the two.
+
+$$\hat{\beta}_1=\bar{Y}_1 - \bar{Y}_0,$$ 
+And also $$\mathcal{H}_0\;:\;\beta_1=0 \iff \mathcal{H}_0\;:\; \mu_1=\mu_0,$$
+ where $\mu_1$ and $\mu_0$ denote the true (population) means.
+\newpage
+\appendix 
+\section{Some Equations}
+\subsection*{Sum of squares}
+\begin{equation*}
+    S_{XX} = \sum (x- \bar{x})^2
+\end{equation*}
+\begin{equation*}
+    S_{YY} = \sum (y- \bar{y})^2 
+\end{equation*}
+\begin{equation*}
+    S_{XY} = \sum (x- \bar{x})(y - \bar{y})
+\end{equation*}
+\subsection*{Estimation}
+$$SSE =S_{YY}-\hat{\beta}_1 S_{XY} = S_{YY} - \frac{S^2_{XY}}{S_{XX}} $$
+\subsection*{R}
+\href{https://www.scribbr.com/statistics/anova-in-r/}{https://www.scribbr.com/statistics/anova-in-r/}
+\end{document} 
